@@ -4,7 +4,7 @@ import MovieList from '../components/Shared/MovieList/MovieList';
  import Options from "../components/Home/Options/Options";
 
 class Home extends Component {  
-  constructor(){
+  constructor() {    
     super()
     this.state = {
       baseURL: "http://image.tmdb.org/t/p/w185/",      
@@ -12,27 +12,58 @@ class Home extends Component {
       topRated: [],
       popular: [],
       nowPlaying: [],      
-      activeOption: [],
-    }    
-}
+      activeOption: [], 
+      genres: [],
+      genreList : []
+    }        
+  }
 
-componentDidMount(){
-  fetch('http://localhost:3001/upcomingMovies')
-    .then(response => response.json())
-    .then(mov => { this.setState({ upcomingMovies: mov })})    
+
+  componentDidMount() {
   
-  fetch('http://localhost:3001/topRated')
+    fetch('http://localhost:3001/genres')
     .then(response => response.json())
-    .then(mov => { this.setState({ topRated: mov })})    
+      .then(genre => { 
+        this.setState({genreList: genre.genres, genres: genre});
+            fetch('http://localhost:3001/upcomingMovies')
+              .then(response => response.json())
+              .then(mov => {
+                this.setState({
+                  upcomingMovies: this.addingGenres(mov, genre),
+                  activeOption: this.addingGenres(mov, genre)
+                })
+              }); 
+            
+            fetch('http://localhost:3001/topRated')
+              .then(response => response.json())
+              .then(mov => { this.setState({ topRated: this.addingGenres(mov, genre) })})    
 
-  fetch('http://localhost:3001/popular')
-   .then(response => response.json())
-    .then(mov => { this.setState({ popular: mov })})    
+            fetch('http://localhost:3001/popular')
+            .then(response => response.json())
+              .then(mov => { this.setState({ popular: this.addingGenres(mov,genre) })})    
 
-  fetch('http://localhost:3001/nowPlaying')
-    .then(response => response.json())
-    .then(mov => { this.setState({ nowPlaying: mov })})      
-}
+            fetch('http://localhost:3001/nowPlaying')
+              .then(response => response.json())
+              .then(mov => { this.setState({ nowPlaying: this.addingGenres(mov,genre) }) })  
+      
+
+    })  
+  }
+
+  addingGenres = (mov, genre) => {
+    mov.forEach(m => {                          
+      m.genres = m.genre_ids.map(id => {                        
+        genre.genres.forEach(g => {
+          if (g.id === id)
+          {
+            id = g.name;
+          }            
+        })        
+        return id;
+      })            
+    });           
+    return mov;
+  }
 
   onSortingChange = (event) => {      
     if (event.target.value === "rating") {
@@ -77,6 +108,7 @@ componentDidMount(){
     }
   
   onOptionChange = (event) => {
+
     switch (event.target.id) {
       case 'upcoming':
         this.setState({activeOption: this.state.upcomingMovies})
@@ -102,19 +134,37 @@ componentDidMount(){
     
     fetch('http://localhost:3001/search', {method:'post',  headers: {'Content-Type' : 'application/json'},body: JSON.stringify({searchMovies: search})})
     .then(response => response.json())
-    .then(mov => { this.setState({ activeOption: mov }) })    
+    .then(mov => { this.setState({ activeOption: this.addingGenres(mov, this.state.genres)})})    
     .catch(err => console.log(err))
     
   }
+
+  onGenreChange = (event => {        
+    var movieGenres = [];
+    console.log(this.state.activeOption)
+    this.state.activeOption.forEach(m => {      
+      if (Object.values(m.genre_ids).includes(Number(event.target.value))) {
+        movieGenres.push(m);
+      }      
+    });
+    if (movieGenres.length > 0)
+    {
+      this.setState({ activeOption: movieGenres })      
+    }        
+    else
+      alert("No movies in that genre");
+  })
   
-  render() {   
-    const { baseURL, activeOption, upcomingMovies } = this.state;      
-   console.log(this.state.searchSuggestions)
+  render() {         
+    const { activeOption, baseURL, upcomingMovies, genreList } = this.state;
+    
     return (     
       <div className="tc">
         <Options onOptionChange={this.onOptionChange}
           onSortingChange={this.onSortingChange}
-          onSearchTextChange={this.onSearchTextChange}/>          
+          onSearchTextChange={this.onSearchTextChange}
+          genreList = {genreList}
+          onGenreChange={this.onGenreChange} />  
         
         {activeOption.length > 0 ?
           <MovieList movies={activeOption} baseURL={baseURL} />

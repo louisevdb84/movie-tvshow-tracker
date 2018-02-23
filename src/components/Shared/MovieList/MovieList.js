@@ -5,7 +5,7 @@ const MovieList = ({movies, baseURL}) => {
     return(
         <div>
             {
-                movies.map((movie, i) => {
+                movies.map((movie, i) => {                    
                     return <Movie 
                         key={i} 
                         id = {movies[i].id}
@@ -16,6 +16,7 @@ const MovieList = ({movies, baseURL}) => {
                         release_date={movies[i].release_date} 
                         overview={movies[i].overview}  
                         baseURL={baseURL} 
+                        genres = {movies[i].genres}
                         />
                 })    
             }

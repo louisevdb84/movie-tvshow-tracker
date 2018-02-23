@@ -14,10 +14,14 @@ class Options extends React.Component {
             <option name="date" value="date">Sort Date</option>            
         </select>  
         
-        <select onChange={this.props.onSortingChange} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-blue pointer">
-            <option>Genre options</option>    
-            <option name="rating" value="rating">Sort Rating</option>
-            <option name="date" value="date">Sort Date</option>            
+        <select onChange={this.props.onGenreChange} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-blue pointer">
+        <option>Genre options</option>                    
+            {   
+                    this.props.genreList.map((g, i) => {                                                    
+                    return <option key={i} value={g.id}>{g.name}</option>                
+                })
+            }                               
+            
         </select>  
           
             </div>    

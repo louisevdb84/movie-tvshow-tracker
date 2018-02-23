@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Movie = ({id,title,poster_path,overview,
-    original_language, vote_average, release_date, baseURL}) => {    
+    original_language, vote_average, release_date, baseURL, genres}) => {    
     return (
         <section className="mw8 center avenir bg-light-gray">  
         <article className="bt bb b--black-10">
@@ -12,8 +12,13 @@ const Movie = ({id,title,poster_path,overview,
                 </div>
                 <div className="w-100 w-80-ns pl3-ns">
                         <h1 className="f3 fw1 baskerville mt0 lh-title">{title}</h1>
-                        <p className="f6 lh-copy mv0">{vote_average}</p>
-                <p className="f6 f5-l lh-copy">
+                        <h4>{
+                            genres.map((genre, i) => {
+                                return <span key={i}>{genre + ", "}</span>
+                            })
+                        }</h4>
+                        <p className="f6 lh-copy mv0">{"Rating: " + vote_average}</p>
+                        <p className="f6 f5-l lh-copy">
                             {overview}
                         </p>
                 
