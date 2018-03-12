@@ -21,11 +21,11 @@ class Home extends Component {
 
   componentDidMount() {
   
-    fetch('http://localhost:3001/genres')
+    fetch('https://safe-bayou-79396.herokuapp.com/genres')
     .then(response => response.json())
       .then(genre => { 
         this.setState({genreList: genre.genres, genres: genre});
-            fetch('http://localhost:3001/upcomingMovies')
+            fetch('https://safe-bayou-79396.herokuapp.com/upcomingMovies')
               .then(response => response.json())
               .then(mov => {
                 this.setState({
@@ -34,15 +34,15 @@ class Home extends Component {
                 })
               }); 
             
-            fetch('http://localhost:3001/topRated')
+            fetch('https://safe-bayou-79396.herokuapp.com/topRated')
               .then(response => response.json())
               .then(mov => { this.setState({ topRated: this.addingGenres(mov, genre) })})    
 
-            fetch('http://localhost:3001/popular')
+            fetch('https://safe-bayou-79396.herokuapp.com/popular')
             .then(response => response.json())
               .then(mov => { this.setState({ popular: this.addingGenres(mov,genre) })})    
 
-            fetch('http://localhost:3001/nowPlaying')
+            fetch('https://safe-bayou-79396.herokuapp.com/nowPlaying')
               .then(response => response.json())
               .then(mov => { this.setState({ nowPlaying: this.addingGenres(mov,genre) }) })  
       
@@ -129,7 +129,7 @@ class Home extends Component {
     
     var search = event.target.value;
     
-    fetch('http://localhost:3001/search', {method:'post',  headers: {'Content-Type' : 'application/json'},body: JSON.stringify({searchMovies: search})})
+    fetch('https://safe-bayou-79396.herokuapp.com/search', {method:'post',  headers: {'Content-Type' : 'application/json'},body: JSON.stringify({searchMovies: search})})
     .then(response => response.json())
     .then(mov => { this.setState({ activeOption: this.addingGenres(mov, this.state.genres)})})    
     .catch(err => console.log(err))
