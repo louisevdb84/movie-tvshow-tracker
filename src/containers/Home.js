@@ -53,12 +53,9 @@ class Home extends Component {
   addingGenres = (mov, genre) => {
     mov.forEach(m => {                          
       m.genres = m.genre_ids.map(id => {                        
-        genre.genres.forEach(g => {
-          if (g.id === id)
-          {
-            id = g.name;
-          }            
-        })        
+        id = genre.genres.find(g => {
+          return (g.id === id);
+        }).name;
         return id;
       })            
     });           
