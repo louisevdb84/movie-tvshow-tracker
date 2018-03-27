@@ -1,0 +1,72 @@
+.homePage{
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+   background: lightcyan;
+   text-align: center;
+}
+
+.homePageImage{
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 30%;
+    left: 0;
+    background: url("https://images.unsplash.com/photo-1501421018470-faf26f6b1bef?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=de2f768321958e878703c793724d87fa&auto=format&fit=crop&w=1050&q=80");
+    background-size: cover;
+    background-position: top;
+}
+
+.homePageHeading{
+    position: absolute;
+    top: 70%;   
+    width: 100%;     
+    align-items: center;
+    color: purple;
+}
+
+.homePageHeading h1 {
+    font-size: 5rem;
+    font-weight: 900;
+}
+
+.homePageHeading button {
+    font-size: 2rem;    
+}
+
+.loginRegister{
+    text-align: right;
+    font-size: 2rem;
+}
+
+@media screen and (max-width: 1218px) {
+    .homePageHeading h1 {
+        font-size: 3rem;
+        font-weight: 900;
+    }
+    
+    .homePageHeading button {
+        font-size: 2rem;    
+    }
+    .loginRegister{
+        text-align: right;
+        font-size: 1.5rem;
+    }
+  }
+
+  @media screen and (max-width: 725px) {
+    .homePageHeading h1 {
+        font-size: 1rem;
+        font-weight: 900;
+    }
+    
+    .homePageHeading button {
+        font-size: 1rem;    
+    }
+    .loginRegister{
+        text-align: right;
+        font-size: 0.8rem;
+    }
+  }
