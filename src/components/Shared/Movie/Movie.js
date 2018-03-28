@@ -108,8 +108,8 @@ const Movie = ({id,title,poster_path,overview,
         <section className="mw8 center avenir bg-light-gray">  
             <article className="bt bb b--black-10">
 
-            { opt === "Movies" && sessionStorage.getItem("user")?
-                <div className = "feedback">{feedback}</div>:<span></span>
+            { opt === "Movies" && sessionStorage.getItem("user") && feedback !== ""?
+                <div className = "feedback"><span>{feedback}</span></div>:<span></span>
             }       
             
                 
@@ -119,36 +119,36 @@ const Movie = ({id,title,poster_path,overview,
                 <img src={baseURL + poster_path} className="db" alt="moviePoster"/>
                 </div>
                 <div className="w-100 w-80-ns pl3-ns">
-                        <h1 className="f3 fw1 baskerville mt0 lh-title">{title}</h1>
-                        {opt === "Movies" ? 
-                            <h4>{
-                                genres.map((genre, i) => {
-                                    return <span key={i}>{genre + ", "}</span>
-                                })
-                            }</h4>
-                            : <h4>{
-                                genres.map((genre, i) => {
-                                    return <span key={i}>{genre.name + ", "}</span>
-                                })
-                                 }</h4>
-                        }
-                    
-                        <p className="f6 lh-copy mv0">{"Rating: " + vote_average}</p>
-                        <p className="f6 f5-l lh-copy">
-                            {overview}
-                        </p>
-                
-                        <p className="f6 lh-copy mv0">{release_date}</p>
-                        <br />        
-                        {opt === "Movies" ?
-                            <span>
-                                {feedback === "Watchlist" || feedback === "Watched" ? <span></span> : <button onClick={addToWatchlist} id={id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-purple pointer">Add to Watchlist</button>}
-                                {feedback === "Watched" ? <button onClick={addToWatchlist} id={id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-blue pointer">Watch Again</button> : <button onClick={addToWatched} id={id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-blue pointer">Watched</button>}
-                            </span>
-                        :
-                            <span><button onClick={removeWatchlist} id={id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-purple pointer">Remove</button>
-                            <button onClick={addToWatched} id={id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-blue pointer">Watched</button></span>
+                    <h1 className="f3 fw1 baskerville mt0 lh-title">{title}</h1>
+                    {opt === "Movies" ? 
+                        <h4>{
+                            genres.map((genre, i) => {
+                                return <span key={i}>{genre + ", "}</span>
+                            })
+                        }</h4>
+                        : <h4>{
+                            genres.map((genre, i) => {
+                                return <span key={i}>{genre.name + ", "}</span>
+                            })
+                                }</h4>
                     }
+                
+                    <p className="f6 lh-copy mv0">{"Rating: " + vote_average}</p>
+                    <p className="f6 f5-l lh-copy">
+                        {overview}
+                    </p>
+            
+                    <p className="f6 lh-copy mv0">{release_date}</p>
+                    <br />        
+                    {opt === "Movies" ?
+                        <span>
+                            {feedback === "Watchlist" || feedback === "Watched" ? <span></span> : <button onClick={addToWatchlist} id={id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-purple pointer">Add to Watchlist</button>}
+                            {feedback === "Watched" ? <button onClick={addToWatchlist} id={id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-blue pointer">Watch Again</button> : <button onClick={addToWatched} id={id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-blue pointer">Watched</button>}
+                        </span>
+                    :
+                        <span><button onClick={removeWatchlist} id={id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-purple pointer">Remove</button>
+                        <button onClick={addToWatched} id={id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-blue pointer">Watched</button></span>
+                }
                        
                 </div>
             </div>    

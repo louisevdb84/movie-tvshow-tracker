@@ -11,7 +11,8 @@ class Watchlist extends Component {
     this.state = {     
       watchlist: [],     
       list: [],
-      baseURL: "http://image.tmdb.org/t/p/w185/",     
+      baseURL: "http://image.tmdb.org/t/p/w185/", 
+      hasWatchlist: true
       
     }        
   }
@@ -29,10 +30,10 @@ class Watchlist extends Component {
       })
         .then(response => response.json())
         .then(list => {
-          if (list) {
-
+          if (list.length > 0) {
+            console.log(list);
             list.forEach(id => {
-
+              this.setState({ hasWatchlist: true })
               fetch('https://safe-bayou-79396.herokuapp.com/id', {
                 method: 'post',
                 headers: { 'Content-Type': 'application/json' },
@@ -47,13 +48,17 @@ class Watchlist extends Component {
                 })
             })
           }
+          else
+          {
+            this.setState({ hasWatchlist: false })
+          }  
         })
     }
   }  
   
   render() {         
     if (sessionStorage.getItem("user")) {
-      const { watchlist, list, baseURL } = this.state;    
+      const { watchlist, list, baseURL, hasWatchlist } = this.state;    
         if (watchlist.id) {
           list.push(watchlist);  
         }    
@@ -63,13 +68,12 @@ class Watchlist extends Component {
             <br />
             <br />
             <br />
-            <br/>
-            {list.length > 0 ?
-              
-              <MovieList movies={list} baseURL={baseURL} />
-            
-              : <p>Loading</p>
-            }  
+            <br />
+            <h1>Watchlist</h1>
+            {!hasWatchlist ?
+              <p>Nothing in watchlist</p>
+              : hasWatchlist && list.length>0 ? <MovieList movies={list} baseURL={baseURL} />            
+              : hasWatchlist ? <p>Loading</p> : <span></span>}
           </div>      
       
         );  

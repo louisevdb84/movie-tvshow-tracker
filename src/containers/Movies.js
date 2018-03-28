@@ -136,8 +136,7 @@ class Movies extends Component {
 
   onSearchTextChange = (event)=> {   
     
-    var search = event.target.value;
-    
+    var search = event.target.value;    
     fetch('https://safe-bayou-79396.herokuapp.com/search', {method:'post',  headers: {'Content-Type' : 'application/json'},body: JSON.stringify({searchMovies: search})})
     .then(response => response.json())
     .then(mov => { this.setState({ activeOption: this.addingGenres(mov, this.state.genres)})})    
@@ -199,22 +198,23 @@ class Movies extends Component {
     
     return (  
       // this.props.$stateParams.username === sessionStorage.getItem("user") ?
-        <div className="tc">      
-        <Navbar>  </Navbar>
-          <Options onOptionChange={this.onOptionChange}
-            onSortingChange={this.onSortingChange}
-            onSearchTextChange={this.onSearchTextChange}
-            genreList = {genreList}
-            onGenreChange={this.onGenreChange} />  
-          
-        {activeOption.length > 0 ?
-          <MovieList movies={activeOption} baseURL={baseURL} opt="Movies" watchlistIds={watchlistIds} watchedIds={watchedIds}/>
-            : (upcomingMovies.length > 0) ?
-            <MovieList movies={upcomingMovies} baseURL={baseURL}  opt = "Movies" watchlistIds={watchlistIds} watchedIds={watchedIds}/>
-            : <p>Loading</p>
-            }
-        </div>   
-        // :  <Login></Login> 
+        <div>      
+          <Navbar></Navbar>
+          <div className="tc"> 
+            <Options onOptionChange={this.onOptionChange}
+              onSortingChange={this.onSortingChange}
+              onSearchTextChange={this.onSearchTextChange}
+              genreList = {genreList}
+              onGenreChange={this.onGenreChange} />  
+            
+          {activeOption.length > 0 ?
+            <MovieList movies={activeOption} baseURL={baseURL} opt="Movies" watchlistIds={watchlistIds} watchedIds={watchedIds}/>
+              : (upcomingMovies.length > 0) ?
+              <MovieList movies={upcomingMovies} baseURL={baseURL}  opt = "Movies" watchlistIds={watchlistIds} watchedIds={watchedIds}/>
+              : <p>Loading</p>
+              }
+          </div>   
+        </div>           
     );
   }
 }
