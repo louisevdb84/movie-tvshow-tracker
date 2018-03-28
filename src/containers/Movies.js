@@ -17,12 +17,18 @@ class Movies extends Component {
       activeOption: [], 
       genres: [],
       genreList: [],     
+      watchlistIds: [],
+      watchedIds: []
       
     }        
   }
 
 
-  componentDidMount() {    
+  componentDidMount() {  
+
+    this.getWatchlist(); 
+    this.getWatched(); 
+
     fetch('https://safe-bayou-79396.herokuapp.com/genres')
     .then(response => response.json())
       .then(genre => { 
@@ -49,7 +55,8 @@ class Movies extends Component {
               .then(mov => { this.setState({ nowPlaying: this.addingGenres(mov,genre) }) })  
       
 
-    })  
+      })  
+      
   }
 
   addingGenres = (mov, genre) => {
@@ -153,9 +160,42 @@ class Movies extends Component {
     else
       alert("No movies in that genre");
   })
-  
+
+  getWatchlist = () => {
+    fetch('https://safe-bayou-79396.herokuapp.com/watchlist', {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: sessionStorage.getItem("user")
+      })
+    })
+      .then(response => response.json())
+      .then(list => {
+        if (list) {
+          this.setState({ watchlistIds: list });          
+        }
+      })
+  }  
+
+  getWatched = () => {
+    fetch('https://safe-bayou-79396.herokuapp.com/watched', {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: sessionStorage.getItem("user")
+      })
+    })
+      .then(response => response.json())
+      .then(list => {
+        if (list) {
+          this.setState({ watchedIds: list });          
+        }
+      })
+  }  
+
+   
   render() {         
-    const { activeOption, baseURL, upcomingMovies, genreList } = this.state;
+    const { activeOption, baseURL, upcomingMovies, genreList,watchlistIds,  watchedIds} = this.state;
     
     return (  
       // this.props.$stateParams.username === sessionStorage.getItem("user") ?
@@ -167,10 +207,10 @@ class Movies extends Component {
             genreList = {genreList}
             onGenreChange={this.onGenreChange} />  
           
-          {activeOption.length > 0 ?
-            <MovieList movies={activeOption} baseURL={baseURL} />
+        {activeOption.length > 0 ?
+          <MovieList movies={activeOption} baseURL={baseURL} opt="Movies" watchlistIds={watchlistIds} watchedIds={watchedIds}/>
             : (upcomingMovies.length > 0) ?
-            <MovieList movies={upcomingMovies} baseURL={baseURL} />
+            <MovieList movies={upcomingMovies} baseURL={baseURL}  opt = "Movies" watchlistIds={watchlistIds} watchedIds={watchedIds}/>
             : <p>Loading</p>
             }
         </div>   
