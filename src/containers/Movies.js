@@ -199,8 +199,8 @@ class Movies extends Component {
   render() {         
     const { activeOption, baseURL, upcomingMovies, genreList,watchlistIds,  watchedIds} = this.state;
     
-    return (  
-      // this.props.$stateParams.username === sessionStorage.getItem("user") ?
+    return (        
+      
         <div>      
           <Navbar></Navbar>
           <div className="tc"> 
@@ -209,7 +209,7 @@ class Movies extends Component {
               onSearchTextChange={this.onSearchTextChange}
               genreList = {genreList}
               onGenreChange={this.onGenreChange} />  
-            
+          {!sessionStorage.getItem("user") ? <div style={{ "background": "red", "color": "white"}}>Your are not signed in</div> : <div></div>}
           {activeOption.length > 0 ?
             <MovieList movies={activeOption} baseURL={baseURL} opt="Movies" watchlistIds={watchlistIds} watchedIds={watchedIds}/>
               : (upcomingMovies.length > 0) ?

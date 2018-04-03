@@ -2,6 +2,8 @@ import React from 'react';
 
 import './Movie.css';
 
+import { router } from '../../../router.config';
+
 class Movie extends React.Component { 
     constructor(props) {
         super(props);
@@ -11,32 +13,37 @@ class Movie extends React.Component {
             watchedIds : this.props.watchedIds,
         }
     }
-    addToWatchlist = (event) => {    
-        var mid = event.target.id;
-           fetch('https://safe-bayou-79396.herokuapp.com/addwatchlist', {
-               method: 'post',
-               headers: { 'Content-Type': 'application/json' },
-               body: JSON.stringify({
-                   id: mid,
-                   username: sessionStorage.getItem("user")
-               })
-           })
-               .then(response => response.json())
-               .then(entry => {                 
-                   if (entry.length > 0) {                                               
-                       this.state.watchlistIds.push({ movieid: entry });                                              
-                       this.addFeedback();
-                   }
-                   else {
-                       alert(entry);
-                   }
-               }) 
-    }  
+    addToWatchlist = (event) => {
+        if (sessionStorage.getItem("user")) {
+            var mid = event.target.id;
+            fetch('https://safe-bayou-79396.herokuapp.com/addwatchlist', {
+                method: 'post',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    id: mid,
+                    username: sessionStorage.getItem("user")
+                })
+            })
+                .then(response => response.json())
+                .then(entry => {
+                    if (entry.length > 0) {
+                        this.state.watchlistIds.push({ movieid: entry });
+                        this.addFeedback();
+                    }
+                    else {
+                        alert(entry);
+                    }
+                })
+        }
+        else {
+            router.stateService.go('login');
+        }
+    }    
         
     
      
     addToWatched = (event) => {
-        
+        if (sessionStorage.getItem("user")) {
         var mid = event.target.id;
             fetch('https://safe-bayou-79396.herokuapp.com/addwatched', {
                 method: 'post',
@@ -58,6 +65,10 @@ class Movie extends React.Component {
                         alert(entry);
                     }
                 }) 
+            }
+            else {
+                router.stateService.go('login');
+            }
     }  
     
     removeWatchlist = (event) => {
