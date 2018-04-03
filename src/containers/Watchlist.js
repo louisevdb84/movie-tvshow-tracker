@@ -17,9 +17,9 @@ class Watchlist extends Component {
     }        
   }
 
-
-
-  componentDidMount() {
+  
+  
+  display() {
     if (sessionStorage.getItem("user")) {
       fetch('https://safe-bayou-79396.herokuapp.com/watchlist', {
         method: 'post',
@@ -54,6 +54,10 @@ class Watchlist extends Component {
           }  
         })
     }
+  }
+
+  componentDidMount() {
+    this.display();
   }  
   
   render() {         
@@ -72,7 +76,7 @@ class Watchlist extends Component {
             <h1>Watchlist</h1>
             {!hasWatchlist ?
               <p>Nothing in watchlist</p>
-              : hasWatchlist && list.length>0 ? <MovieList movies={list} baseURL={baseURL} />            
+              : hasWatchlist && list.length>0 ? <MovieList movies={list} baseURL={baseURL}/>            
               : hasWatchlist ? <p>Loading</p> : <span></span>}
           </div>      
       

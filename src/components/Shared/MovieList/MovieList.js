@@ -19,7 +19,7 @@ const MovieList = ({ movies, baseURL, addToWatchlist, opt, watchlistIds,  watche
                         genres={movies[i].genres}                        
                         opt={opt}
                         watchlistIds={watchlistIds}
-                        watchedIds={watchedIds}
+                        watchedIds={watchedIds}                        
                         />
                 })    
             }

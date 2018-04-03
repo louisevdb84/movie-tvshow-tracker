@@ -139,9 +139,12 @@ class Movies extends Component {
     var search = event.target.value;    
     fetch('https://safe-bayou-79396.herokuapp.com/search', {method:'post',  headers: {'Content-Type' : 'application/json'},body: JSON.stringify({searchMovies: search})})
     .then(response => response.json())
-    .then(mov => { this.setState({ activeOption: this.addingGenres(mov, this.state.genres)})})    
+      .then(mov => {
+        this.setState({
+          activeOption: this.addingGenres(mov, this.state.genres)          
+        })
+      })    
     .catch(err => console.log(err))
-    
   }
 
   onGenreChange = (event => {        
