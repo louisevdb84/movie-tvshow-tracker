@@ -25,10 +25,9 @@ class Options extends React.Component {
         </select>  
           
             </div>    
-                <div className="options dtc tc bg-black-10">
-                    <button id = 'upcoming' onClick = {this.props.onOptionChange} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-purple pointer" >Upcoming</button>
-                    <button id = 'topRated' onClick = {this.props.onOptionChange} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-blue pointer">Top Rated</button>
-                    <button id = 'popular' onClick = {this.props.onOptionChange} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-purple pointer">Popular</button>
+                <div className="options dtc tc bg-black-10">                    
+                    
+                    
                     <button id = 'nowPlaying' onClick = {this.props.onOptionChange} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-blue pointer">Now Playing</button>                    
                 </div>
         
