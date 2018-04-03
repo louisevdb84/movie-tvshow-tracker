@@ -12,7 +12,8 @@ class Watchlist extends Component {
       watchlist: [],     
       list: [],
       baseURL: "http://image.tmdb.org/t/p/w185/", 
-      hasWatchlist: true
+      hasWatchlist: true, 
+      watchedIds: []
       
     }        
   }
@@ -56,8 +57,25 @@ class Watchlist extends Component {
     }
   }
 
+  getWatched = () => {
+    fetch('https://safe-bayou-79396.herokuapp.com/watched', {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: sessionStorage.getItem("user")
+      })
+    })
+      .then(response => response.json())
+      .then(list => {
+        if (list) {
+          this.setState({ watchedIds: list });          
+        }
+      })
+  }  
+
   componentDidMount() {
     this.display();
+    this.getWatched();
   }  
   
   render() {         
@@ -76,7 +94,7 @@ class Watchlist extends Component {
             <h1>Watchlist</h1>
             {!hasWatchlist ?
               <p>Nothing in watchlist</p>
-              : hasWatchlist && list.length>0 ? <MovieList movies={list} baseURL={baseURL}/>            
+              : hasWatchlist && list.length>0 ? <MovieList movies={list} baseURL={baseURL} watchedIds={this.state.watchedIds}/>            
               : hasWatchlist ? <p>Loading</p> : <span></span>}
           </div>      
       

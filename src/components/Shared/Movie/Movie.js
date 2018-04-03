@@ -56,9 +56,10 @@ class Movie extends React.Component {
                 .then(response => response.json())
                 .then(entry => {
                     
-                    if (entry.length > 0) {                    
+                    if (entry.length > 0) {   
+                        console.log( this.props.watchedIds);
+                        this.state.watchedIds.push({ movieid: entry});                       
                         this.removeWatchlist(mid);
-                        this.state.watchedIds.push({ movieid: entry });                       
                         this.addFeedback();
                     }
                     else {
@@ -93,7 +94,51 @@ class Movie extends React.Component {
             .then(response => response.json())
             .then(entry => {        
               if(this.props.opt !== "Movies")
-                document.location.reload();                        
+                    document.location.reload();  
+              else {
+                  for (var i = this.state.watchlistIds.length - 1; i >= 0; i--) {                    
+                    if(Number(this.state.watchlistIds[i].movieid) === Number(entry.movieid)) {
+                        this.state.watchlistIds.splice(i, 1);
+                    }
+                  }                  
+                this.addFeedback();
+                }
+            }) 
+    }  
+    
+    removeWatched = (event) => {
+        
+        
+        var mid = "";
+        try {
+            mid = event.target.id;    
+        }
+        catch (err) {
+            mid = event;
+        }
+    
+        fetch('https://safe-bayou-79396.herokuapp.com/deletewatched', {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                id: mid,
+                username: sessionStorage.getItem("user")
+            })
+        })
+            .then(response => response.json())
+            .then(entry => {        
+                if (this.props.opt !== "Movies")
+                {
+                    document.location.reload();          
+                } 
+                else {
+                    for (var i = this.state.watchedIds.length - 1; i >= 0; i--) {                    
+                        if(Number(this.state.watchedIds[i].movieid) === Number(entry.movieid)) {
+                            this.state.watchedIds.splice(i, 1);
+                        }
+                      }                                         
+                    this.addFeedback();
+                }  
             }) 
       }  
     
@@ -101,6 +146,14 @@ class Movie extends React.Component {
         if (this.props.opt === "Movies" && sessionStorage.getItem("user"))
         {
             var found = false;
+           
+            this.state.watchedIds.forEach(w => {                        
+                if (Number(w.movieid) === Number(this.props.id))
+                {
+                    this.setState({ feedback: "Watched" }); 
+                    found = true;                    
+                }                  
+            });   
             this.state.watchlistIds.forEach(w => {            
             
                 if (Number(w.movieid) === Number(this.props.id))
@@ -109,13 +162,6 @@ class Movie extends React.Component {
                     found = true;                    
                 }                   
             });
-            this.state.watchedIds.forEach(w => {                        
-                if (Number(w.movieid) === Number(this.props.id))
-                {
-                    this.setState({ feedback: "Watched" }); 
-                    found = true;                    
-                }                  
-            });   
             if (!found) {
                 this.setState({ feedback: "" });
             }
@@ -139,7 +185,7 @@ class Movie extends React.Component {
                     <article className="bt bb b--black-10">
         
                     { opt === "Movies" && sessionStorage.getItem("user") && feedback !== ""?
-                            <div className="feedback"><span>{feedback}</span></div>:<span></span>
+                            <div className={feedback}><span>{feedback}</span></div>:<span></span>
                     }       
                     
                         
@@ -172,8 +218,22 @@ class Movie extends React.Component {
                             <br />        
                             {opt === "Movies" ?
                                 <span>
-                                    {feedback === "Watchlist" || feedback === "Watched" ? <span></span> : <button onClick={this.addToWatchlist} id={id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-purple pointer">Add to Watchlist</button>}
-                                    {feedback === "Watched" ? <button onClick={this.addToWatchlist} id={id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-blue pointer">Watch Again</button> : <button onClick={this.addToWatched} id={id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-blue pointer">Watched</button>}
+                                        {feedback === "Watchlist" ?
+                                            <span>
+                                                <button onClick={this.addToWatched} id={id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-blue pointer">Watched</button>
+                                                <button onClick={this.removeWatchlist} id={id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-purple pointer">Remove from watchlist</button>
+                                            </span>
+                                            : feedback === "Watched" ?
+                                                <span>
+                                                    <button onClick={this.addToWatchlist} id={id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-blue pointer">Watch Again</button>
+                                                    <button onClick={this.removeWatched} id={id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-purple pointer">Remove from watched</button>    
+                                                </span>
+                                                :
+                                                <span>
+                                                    <button onClick={this.addToWatchlist} id={id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-purple pointer">Add to Watchlist</button>
+                                                    <button onClick={this.addToWatched} id={id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-blue pointer">Watched</button>
+                                                </span>
+                                        }                                    
                                 </span>
                             :
                                 <span><button onClick={this.removeWatchlist} id={id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-purple pointer">Remove</button>

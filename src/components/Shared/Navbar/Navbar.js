@@ -7,6 +7,11 @@ function signout() {
     sessionStorage.removeItem("user");
 }
 
+
+function comingSoon() {
+    alert("Not yet implemented... Coming Soon");
+}
+
 const Navbar = () => {
     return (
         <div className = "navbar">                               
@@ -15,6 +20,7 @@ const Navbar = () => {
             <UISref to="home" params={{ username: sessionStorage.getItem("user") }}><a className="link dim white dib mr3" href="" title="home">Home</a></UISref>
             <UISref to="movies"  params={{ username: sessionStorage.getItem("user") }}><a className="link dim white dib mr3" href="" title="movies">Movies</a></UISref>          
             <UISref to="watchlist" params={{ username: sessionStorage.getItem("user") }}><a className="link dim white dib mr3" href="" title="watchlist">Watchlist</a></UISref>  
+            <a onClick={comingSoon} className="link dim white dib mr3" >Report Bug / Suggest Features</a> 
             {!sessionStorage.getItem("user") ?
             <span className = "loginDetails">            
                 <UISref to="login" params={{ username: sessionStorage.getItem("user") }}><a className="link dim white dib mr3" href="" title="watchlist">Sign In</a></UISref>

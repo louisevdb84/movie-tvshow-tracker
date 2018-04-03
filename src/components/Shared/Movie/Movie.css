@@ -1,15 +1,30 @@
-.feedback{
+.Watchlist, .Watched{
     margin-top: 10px; 
     text-align: right;
     margin-right: 10px;    
 }
 
-.feedback span{
+.Watchlist span{
     margin-top: 5px;    
     font-weight: bold;
     color: white;
     text-align: right;
     background: #5e2ca5;
+    font-size: 1.2em;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 5px;
+
+}
+
+.Watched span{
+    margin-top: 5px;    
+    font-weight: bold;
+    color: white;
+    text-align: right;
+    background: red;
     font-size: 1.2em;
     padding-left: 50px;
     padding-right: 50px;
