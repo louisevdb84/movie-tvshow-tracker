@@ -42,7 +42,7 @@ class Movie extends React.Component {
         
     
      
-    addToWatched = (event) => {
+    addToWatched = (event) => {        
         if (sessionStorage.getItem("user")) {
         var mid = event.target.id;
             fetch('https://safe-bayou-79396.herokuapp.com/addwatched', {
@@ -56,9 +56,8 @@ class Movie extends React.Component {
                 .then(response => response.json())
                 .then(entry => {
                     
-                    if (entry.length > 0) {   
-                        console.log( this.props.watchedIds);
-                        this.state.watchedIds.push({ movieid: entry});                       
+                    if (entry.length > 0) {                           
+                        this.state.watchedIds.push({ movieid: entry });                        
                         this.removeWatchlist(mid);
                         this.addFeedback();
                     }
@@ -142,7 +141,8 @@ class Movie extends React.Component {
             }) 
       }  
     
-    addFeedback = () => {              
+    addFeedback = () => {   
+        console.log(this.state.watchedIds)
         if (this.props.opt === "Movies" && sessionStorage.getItem("user"))
         {
             var found = false;
@@ -166,6 +166,9 @@ class Movie extends React.Component {
                 this.setState({ feedback: "" });
             }
         }    
+    }
+    componentDidMount() {        
+        this.addFeedback();
     }
     componentWillReceiveProps() {        
         this.addFeedback();

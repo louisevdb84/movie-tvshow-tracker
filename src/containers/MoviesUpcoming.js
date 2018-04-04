@@ -20,8 +20,8 @@ class Movies extends Component {
   }
 
 
-  componentDidMount() {  
-
+  componentDidMount() {      
+    
     this.getWatchlist(); 
     this.getWatched(); 
 
@@ -133,7 +133,7 @@ class Movies extends Component {
       .then(response => response.json())
       .then(list => {
         if (list) {
-          this.setState({ watchedIds: list });          
+          this.setState({ watchedIds: list });           
         }
       })
   }  
