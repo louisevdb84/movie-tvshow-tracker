@@ -18,7 +18,7 @@ class Register extends React.Component {
       .then(user => {        
         if (user) {          
           sessionStorage.setItem("user", user);
-          router.stateService.go('movies', { username: user});          
+          router.stateService.go('upcoming', { username: user});          
         }
         else {
           document.querySelector('.form-control-feedback').innerHTML = user;  

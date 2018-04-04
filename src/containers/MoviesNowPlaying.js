@@ -141,14 +141,14 @@ class NowPlaying extends Component {
     return (        
       
         <div>      
-          <Navbar></Navbar>
-          <div className="tc"> 
-            <Options onOptionChange={this.onOptionChange}
+        <Navbar></Navbar>
+        <Options onOptionChange={this.onOptionChange}
               onSortingChange={this.onSortingChange}
               onSearchTextChange={this.onSearchTextChange}
               genreList = {genreList}
                     onGenreChange={this.onGenreChange} />  
-              <h1>Now Playing</h1>
+          <div className="tc">             
+          <h1 className="moviesheading">Now Playing</h1>
           {!sessionStorage.getItem("user") ? <div style={{ "background": "red", "color": "white"}}>Your are not signed in</div> : <div></div>}
           {nowPlaying.length > 0 ?
             <MovieList movies={nowPlaying} baseURL={baseURL} opt="Movies" watchlistIds={watchlistIds} watchedIds={watchedIds}/>             

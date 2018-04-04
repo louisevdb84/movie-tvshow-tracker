@@ -19,7 +19,7 @@ class Login extends React.Component {
       .then(user => {        
         if (user.id) {          
           sessionStorage.setItem("user", user.username);
-          router.stateService.go('movies', { username: user.username });
+          router.stateService.go('upcoming', { username: user.username });
         }
         else {
           document.querySelector('.form-control-feedback').innerHTML = user;          

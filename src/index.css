@@ -4,3 +4,14 @@ body {
   font-family: sans-serif;
   background: aliceblue;
 }
+
+.moviesheading {
+  margin: 0 auto;
+  width: 1023.99px; 
+  text-align: left;  
+}
+
+h1.moviesheading{
+  padding-top: 10px;
+  padding-bottom: 10px;
+}

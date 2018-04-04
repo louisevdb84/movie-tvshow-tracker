@@ -142,14 +142,15 @@ class Popular extends Component {
     return (        
       
         <div>      
-          <Navbar></Navbar>
+        <Navbar></Navbar>
+        <Options onOptionChange={this.onOptionChange}
+        onSortingChange={this.onSortingChange}
+        onSearchTextChange={this.onSearchTextChange}
+        genreList = {genreList}
+              onGenreChange={this.onGenreChange} />  
           <div className="tc"> 
-            <Options onOptionChange={this.onOptionChange}
-              onSortingChange={this.onSortingChange}
-              onSearchTextChange={this.onSearchTextChange}
-              genreList = {genreList}
-                    onGenreChange={this.onGenreChange} />  
-              <h1>Popular Movies</h1>
+           
+           <h1 className="moviesheading">Popular Movies</h1>
           {!sessionStorage.getItem("user") ? <div style={{ "background": "red", "color": "white"}}>Your are not signed in</div> : <div></div>}
           {popular.length > 0 ?
             <MovieList movies={popular} baseURL={baseURL} opt="Movies" watchlistIds={watchlistIds} watchedIds={watchedIds}/>              

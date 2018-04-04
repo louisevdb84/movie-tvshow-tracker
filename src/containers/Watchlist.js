@@ -85,18 +85,20 @@ class Watchlist extends Component {
           list.push(watchlist);  
         }    
         return (  
-          <div className="tc">      
+          <div>      
             <Navbar></Navbar>
             <br />
             <br />
             <br />
             <br />
+            <div className="tc">      
             <h1>Watchlist</h1>
             {!hasWatchlist ?
               <p>Nothing in watchlist</p>
               : hasWatchlist && list.length>0 ? <MovieList movies={list} baseURL={baseURL} watchedIds={this.state.watchedIds}/>            
               : hasWatchlist ? <p>Loading</p> : <span></span>}
-          </div>      
+            </div>      
+            </div>        
       
         );  
     }

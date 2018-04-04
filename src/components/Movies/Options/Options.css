@@ -1,20 +1,72 @@
-.options {
-    padding-top: 250px;
-    /* padding-left: 20%;
-    float: left; */
-    width:50%;
+
+.options {    
+    padding-top: 60px;        
+    padding-bottom: 8px;        
+    background: #00449e;
+    /* position: fixed;
+    top:60px;
+    width: 100%;    */
+    
 }
-.nav{
-    overflow: hidden;
+.optionsContainer {
+    margin: 0 auto;
+    width: 1023.99px;   
 }
+
 .search{
-    /* float: right;
-    position: relative;
-    padding-top: 100px;
-    padding-right: 5%; */
-    width: 30%
+    width: 70%;
+    display: inline-block;
+    text-align: right;
 }
 
 .filter{
-    width:30%;
+ 
+    display: inline-block;
+    text-align: left;
+    
+}
+
+.txtSearch{
+    background: white;
+    padding: 5px;
+    width: 50%;
+    border-radius: 10px;
+    background: whitesmoke;
+}
+
+.dropdbox{
+    background: whitesmoke;    
+    padding: 5px;
+    width: 50%;
+    border-radius: 10px;
+    
+}
+
+.dropdbox option{
+    background: whitesmoke;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+@media screen and (max-width: 1000px)
+{
+    .search{
+        width: 50%;
+        display: inline-block;
+        text-align: left;
+    }
+}
+
+
+@media screen and (max-width: 600px)
+{
+    .search{
+        width: 30%;
+        
+    }
+    .filter{
+        width:25%;
+        
+    }    
+
 }

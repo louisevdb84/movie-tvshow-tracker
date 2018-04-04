@@ -1,7 +1,7 @@
 import React from 'react';
 import './Navbar.css';
 
-import { UISref } from '@uirouter/react'
+import { UISref, UISrefActive } from '@uirouter/react'
 
 function signout() {
     sessionStorage.removeItem("user");
@@ -15,31 +15,31 @@ function comingSoon() {
 const Navbar = () => {
     return (
         <div className = "navbar">                               
-        <header className="bg-dark-blue fixed w-100 ph3 pv3 pv4-ns ph4-m ph5-l">
-                <nav className="f6 fw6 ttu tracked">
+        <header className="custom-bg fixed w-100 ph3 pv3 pv4-ns ph4-m ph5-l">
+                <nav className="f6 fw6 ttu tracked moviesheading">
                     
-                    <UISref to="home" params={{ username: sessionStorage.getItem("user") }}><a className="link dim white dib mr3" href="" title="home">Home</a></UISref>
+                <UISrefActive class="active"><UISref to="home" params={{ username: sessionStorage.getItem("user") }}><a className="link dim dib mr3">Home</a></UISref></UISrefActive>
             
                     <div class="dropdown">
-                        <a class="link dim white dib mr3">Movies</a>
+                        <a class="dim dib mr3">Movies</a>
                         <div class="dropdown-content">
-                            <UISref to="upcoming"  params={{ username: sessionStorage.getItem("user") }}><a className="link dim white dib mr3" href="" title="movies">Upcoming</a></UISref>          
-                            <UISref to="toprated"  params={{ username: sessionStorage.getItem("user") }}><a className="link dim white dib mr3" href="" title="movies">Top Rated</a></UISref>          
-                            <UISref to="popular" params={{ username: sessionStorage.getItem("user") }}><a className="link dim white dib mr3" href="" title="movies">Popular</a></UISref>          
-                            <UISref to="nowPlaying"  params={{ username: sessionStorage.getItem("user") }}><a className="link dim white dib mr3" href="" title="movies">Now Playing</a></UISref>          
+                        <UISrefActive class="active"><UISref to="upcoming"  params={{ username: sessionStorage.getItem("user") }}><a className="dib mr3">Upcoming</a></UISref></UISrefActive> 
+                        <UISrefActive class="active"><UISref to="toprated"  params={{ username: sessionStorage.getItem("user") }}><a className="dib mr3">Top Rated</a></UISref></UISrefActive> 
+                        <UISrefActive class="active"><UISref to="popular" params={{ username: sessionStorage.getItem("user") }}><a className="dib mr3">Popular</a></UISref></UISrefActive> 
+                        <UISrefActive class="active"><UISref to="nowPlaying"  params={{ username: sessionStorage.getItem("user") }}><a className="mr3">Now Playing</a></UISref></UISrefActive>   
                         </div>
                     </div>
            
-            <UISref to="watchlist" params={{ username: sessionStorage.getItem("user") }}><a className="link dim white dib mr3" href="" title="watchlist">Watchlist</a></UISref>  
+                    <UISrefActive class="active"><UISref to="watchlist" params={{ username: sessionStorage.getItem("user") }}><a className="link dim mr3">Watchlist</a></UISref></UISrefActive>                     
             
             {!sessionStorage.getItem("user") ?
             <span className = "loginDetails">            
-                <UISref to="login" params={{ username: sessionStorage.getItem("user") }}><a className="link dim white dib mr3" href="" title="watchlist">Sign In</a></UISref>
-                <UISref to="register" params={{ username: sessionStorage.getItem("user") }}><a className="link dim white dib mr3" href="" title="watchlist">Register</a></UISref>          
+                <UISrefActive class="active"><UISref to="login" params={{ username: sessionStorage.getItem("user") }}><a className="dim dib mr3">Sign In</a></UISref></UISrefActive> 
+                <UISrefActive class="active"><UISref to="register" params={{ username: sessionStorage.getItem("user") }}><a className="dim dib mr3">Register</a></UISref></UISrefActive> 
             </span>     
             : <span className="loginDetails">
-                <p className="link white dib mr3" href="" title="watchlist">Signed in as {sessionStorage.getItem("user")}</p>
-                <a className="link dim white dib mr3" href="" onClick={signout} title="watchlist">Sign Out</a>            
+                <p className="dib mr3">Signed in as {sessionStorage.getItem("user")}</p>
+                <a className="dim dib mr3" onClick={signout}>Sign Out</a>            
             </span> 
     }            
         </nav>
@@ -53,6 +53,6 @@ export default Navbar;
 
 
 
-// <a onClick={comingSoon} className="link dim white dib mr3" >Report Bug / Suggest Features</a> 
+// <a onClick={comingSoon} className="dim dib mr3" >Report Bug / Suggest Features</a> 
 
 
