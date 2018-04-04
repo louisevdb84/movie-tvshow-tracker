@@ -14,7 +14,8 @@ class Movies extends Component {
       genres: [],
       genreList: [],     
       watchlistIds: [],
-      watchedIds: []
+      watchedIds: [],
+      backupMovies: []
       
     }        
   }
@@ -32,7 +33,12 @@ class Movies extends Component {
             
             fetch('https://safe-bayou-79396.herokuapp.com/topRated')
               .then(response => response.json())
-              .then(mov => { this.setState({ topRated: this.addingGenres(mov, genre) })})    
+              .then(mov => {
+                this.setState({
+                  topRated: this.addingGenres(mov, genre),
+                  backupMovies: this.addingGenres(mov, genre),
+                })
+              })    
       })  
       
   }
@@ -76,23 +82,28 @@ class Movies extends Component {
     }
     
 
-  onSearchTextChange = (event)=> {   
+  onSearchTextChange = (event) => {
     
-    var search = event.target.value;    
-    fetch('https://safe-bayou-79396.herokuapp.com/search', {method:'post',  headers: {'Content-Type' : 'application/json'},body: JSON.stringify({searchMovies: search})})
-    .then(response => response.json())
-      .then(mov => {
-        this.setState({
-            topRated: this.addingGenres(mov, this.state.genres)          
+    var search = event.target.value;
+    if (search.length < 1) {
+      this.setState({ topRated: this.state.backupMovies })
+      console.log(this.state.topRated)
+    }
+    else {
+      fetch('https://safe-bayou-79396.herokuapp.com/search', { method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ searchMovies: search }) })
+        .then(response => response.json())
+        .then(mov => {
+          this.setState({
+            topRated: this.addingGenres(mov, this.state.genres)
+          })
         })
-      })    
-    .catch(err => console.log(err))
-  }
+        .catch(err => console.log(err))
+    }
+  }  
 
   onGenreChange = (event => {        
-    var movieGenres = [];
-    console.log(this.state.topRated)
-    this.state.topRated.forEach(m => {      
+    var movieGenres = [];    
+    this.state.backupMovies.forEach(m => {      
       if (Object.values(m.genre_ids).includes(Number(event.target.value))) {
         movieGenres.push(m);
       }      

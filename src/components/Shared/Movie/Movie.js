@@ -141,8 +141,7 @@ class Movie extends React.Component {
             }) 
       }  
     
-    addFeedback = () => {   
-        console.log(this.state.watchedIds)
+    addFeedback = () => {           
         if (this.props.opt === "Movies" && sessionStorage.getItem("user"))
         {
             var found = false;

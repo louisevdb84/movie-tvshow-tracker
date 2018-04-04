@@ -14,14 +14,14 @@ class Movies extends Component {
       genres: [],
       genreList: [],     
       watchlistIds: [],
-      watchedIds: []
-      
+      watchedIds: [],
+      backupMovies: []
     }        
   }
 
 
   componentDidMount() {      
-    
+
     this.getWatchlist(); 
     this.getWatched(); 
 
@@ -34,6 +34,7 @@ class Movies extends Component {
               .then(mov => {
                 this.setState({
                   upcomingMovies: this.addingGenres(mov, genre),                  
+                  backupMovies: this.addingGenres(mov, genre),                  
                 })
               });             
            
@@ -80,20 +81,28 @@ class Movies extends Component {
   onSearchTextChange = (event)=> {   
     
     var search = event.target.value;    
-    fetch('https://safe-bayou-79396.herokuapp.com/search', {method:'post',  headers: {'Content-Type' : 'application/json'},body: JSON.stringify({searchMovies: search})})
-    .then(response => response.json())
-      .then(mov => {
-        this.setState({
-            upcomingMovies: this.addingGenres(mov, this.state.genres)          
-        })
-      })    
-    .catch(err => console.log(err))
+    if (search.length < 1)
+    {
+      this.setState({ upcomingMovies: this.state.backupMovies })
+      
+    }  
+    else
+    {
+      fetch('https://safe-bayou-79396.herokuapp.com/search', {method:'post',  headers: {'Content-Type' : 'application/json'},body: JSON.stringify({searchMovies: search})})
+      .then(response => response.json())
+        .then(mov => {
+          this.setState({
+              upcomingMovies: this.addingGenres(mov, this.state.genres)          
+          })
+        })    
+      .catch(err => console.log(err))
+      }  
   }
 
   onGenreChange = (event => {        
     var movieGenres = [];
     
-    this.state.upcomingMovies.forEach(m => {      
+    this.state.backupMovies.forEach(m => {      
       if (Object.values(m.genre_ids).includes(Number(event.target.value))) {
         movieGenres.push(m);
       }      

@@ -14,7 +14,8 @@ class Popular extends Component {
       genres: [],
       genreList: [],     
       watchlistIds: [],
-      watchedIds: []
+      watchedIds: [],
+      backupMovies: []
       
     }        
   }
@@ -31,7 +32,7 @@ class Popular extends Component {
         this.setState({genreList: genre.genres, genres: genre});           
             fetch('https://safe-bayou-79396.herokuapp.com/popular')
             .then(response => response.json())
-              .then(mov => { this.setState({ popular: this.addingGenres(mov,genre) })})    
+              .then(mov => { this.setState({ popular: this.addingGenres(mov,genre), backupMovies: this.addingGenres(mov, genre), })})    
       })  
       
   }
@@ -74,23 +75,28 @@ class Popular extends Component {
     }
   
 
-  onSearchTextChange = (event)=> {   
+  onSearchTextChange = (event) => {
     
-    var search = event.target.value;    
-    fetch('https://safe-bayou-79396.herokuapp.com/search', {method:'post',  headers: {'Content-Type' : 'application/json'},body: JSON.stringify({searchMovies: search})})
-    .then(response => response.json())
-      .then(mov => {
-        this.setState({
-            popular: this.addingGenres(mov, this.state.genres)          
+    var search = event.target.value;
+    if (search.length < 1) {
+      this.setState({ popular: this.state.backupMovies })
+      
+    }
+    else {
+      fetch('https://safe-bayou-79396.herokuapp.com/search', { method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ searchMovies: search }) })
+        .then(response => response.json())
+        .then(mov => {
+          this.setState({
+            popular: this.addingGenres(mov, this.state.genres)
+          })
         })
-      })    
-    .catch(err => console.log(err))
-  }
+        .catch(err => console.log(err))
+    }
+  }  
 
   onGenreChange = (event => {        
-    var movieGenres = [];
-    console.log(this.state.popular)
-    this.state.popular.forEach(m => {      
+    var movieGenres = [];    
+    this.state.backupMovies.forEach(m => {      
       if (Object.values(m.genre_ids).includes(Number(event.target.value))) {
         movieGenres.push(m);
       }      
