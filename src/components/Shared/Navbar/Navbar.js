@@ -3,14 +3,11 @@ import './Navbar.css';
 
 import { UISref, UISrefActive } from '@uirouter/react'
 
-function signout() {
+function signout() {    
     sessionStorage.removeItem("user");
+    document.location.reload();
 }
 
-
-function comingSoon() {
-    alert("Not yet implemented... Coming Soon");
-}
 
 const Navbar = () => {
     return (
