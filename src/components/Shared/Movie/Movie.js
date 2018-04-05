@@ -10,7 +10,8 @@ class Movie extends React.Component {
         this.state = {
             feedback: "",
             watchlistIds : this.props.watchlistIds,
-            watchedIds : this.props.watchedIds,
+            watchedIds: this.props.watchedIds,
+            dislikeIds: this.props.dislikeIds
         }
     }
     addToWatchlist = (event) => {
@@ -70,6 +71,33 @@ class Movie extends React.Component {
             }
     }  
     
+    addToDislike = (event) => {
+        if (sessionStorage.getItem("user")) {
+            var mid = event.target.id;
+            fetch('https://safe-bayou-79396.herokuapp.com/addDislike', {
+                method: 'post',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    id: mid,
+                    username: sessionStorage.getItem("user")
+                })
+            })
+                .then(response => response.json())
+                .then(entry => {
+                    if (entry.length > 0) {
+                        this.state.dislikeIds.push({ movieid: entry });
+                        this.addFeedback();
+                    }
+                    else {
+                        alert(entry);
+                    }
+                })
+        }
+        else {
+            router.stateService.go('login');
+        }
+    }    
+
     removeWatchlist = (event) => {
         
         
@@ -138,7 +166,42 @@ class Movie extends React.Component {
                     this.addFeedback();
                 }  
             }) 
-      }  
+    }  
+    
+    removeDislike = (event) => {
+        
+        
+        var mid = "";
+        try {
+            mid = event.target.id;    
+        }
+        catch (err) {
+            mid = event;
+        }
+    
+        fetch('https://safe-bayou-79396.herokuapp.com/deleteDislike', {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                id: mid,
+                username: sessionStorage.getItem("user")
+            })
+        })
+            .then(response => response.json())
+            .then(entry => {        
+              if(this.props.opt !== "Movies")
+                    document.location.reload();  
+              else {
+                  for (var i = this.state.dislikeIds.length - 1; i >= 0; i--) {                    
+                    if(Number(this.state.dislikeIds[i].movieid) === Number(entry.movieid)) {
+                        this.state.dislikeIds.splice(i, 1);
+                    }
+                  }                  
+                this.addFeedback();
+                }
+            }) 
+    }  
+    
     
     addFeedback = () => {           
         if (this.props.opt === "Movies" && sessionStorage.getItem("user"))
@@ -157,6 +220,14 @@ class Movie extends React.Component {
                 if (Number(w.movieid) === Number(this.props.id))
                 {
                     this.setState({ feedback: "Watchlist" });
+                    found = true;                    
+                }                   
+            });
+            this.state.dislikeIds.forEach(w => {            
+            
+                if (Number(w.movieid) === Number(this.props.id))
+                {
+                    this.setState({ feedback: "Dislike" });
                     found = true;                    
                 }                   
             });
@@ -229,12 +300,18 @@ class Movie extends React.Component {
                                                     <button onClick={this.addToWatchlist} id={id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-blue pointer">Watch Again</button>
                                                     <button onClick={this.removeWatched} id={id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-purple pointer">Remove from watched</button>    
                                                 </span>
-                                                :
-                                                <span>
-                                                    <button onClick={this.addToWatchlist} id={id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-purple pointer">Add to Watchlist</button>
-                                                    <button onClick={this.addToWatched} id={id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-blue pointer">Watched</button>
+                                                
+                                            : feedback === "Dislike" ?
+                                                <span>                                                    
+                                                    <button onClick={this.removeDislike} id={id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-purple pointer">Remove dislike</button>    
                                                 </span>
-                                        }                                    
+                                            :
+                                            <span>
+                                                <button onClick={this.addToWatchlist} id={id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-purple pointer">Add to Watchlist</button>
+                                                <button onClick={this.addToWatched} id={id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-blue pointer">Watched</button>
+                                                <button onClick={this.addToDislike} id={id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-blue pointer">Dislike</button>        
+                                            </span>    
+                                    }                                    
                                 </span>
                             :
                                 <span><button onClick={this.removeWatchlist} id={id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-purple pointer">Remove</button>

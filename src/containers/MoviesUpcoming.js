@@ -16,6 +16,7 @@ class Movies extends Component {
       genreList: [],     
       watchlistIds: [],
       watchedIds: [],
+      dislikeIds: [],
       backupMovies: [],      
       totalPages: 0,
       page: 1
@@ -27,6 +28,7 @@ class Movies extends Component {
     this.getPages();     
     this.getWatchlist(); 
     this.getWatched(); 
+    this.getDislike();
     this.getMovies();
   }
 
@@ -210,9 +212,24 @@ class Movies extends Component {
       })
   }  
 
+  getDislike = () => {
+    fetch('https://safe-bayou-79396.herokuapp.com/dislike', {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: sessionStorage.getItem("user")
+      })
+    })
+      .then(response => response.json())
+      .then(list => {
+        if (list) {
+          this.setState({ dislikeIds: list });          
+        }
+      })
+  }  
    
   render() {         
-    const { baseURL, upcomingMovies, genreList,watchlistIds,  watchedIds} = this.state;
+    const { baseURL, upcomingMovies, genreList, watchlistIds, watchedIds, dislikeIds } = this.state;
     
     return (        
       
@@ -231,7 +248,7 @@ class Movies extends Component {
           {upcomingMovies.length > 0 ?
             <div>
               <Pagination totalPages={this.state.totalPages} page={this.state.page} prevPage={this.prevPage} nextPage={this.nextPage} randomPage={this.randomPage}></Pagination>
-                <MovieList movies={upcomingMovies} baseURL={baseURL} opt="Movies" watchlistIds={watchlistIds} watchedIds={watchedIds} />              
+                <MovieList movies={upcomingMovies} baseURL={baseURL} opt="Movies" watchlistIds={watchlistIds} watchedIds={watchedIds} dislikeIds={dislikeIds}/>              
               <Pagination totalPages={this.state.totalPages} page={this.state.page} prevPage={this.prevPage} nextPage={this.nextPage} randomPage={this.randomPage}></Pagination>
               </div>  
               : <p>Loading</p>

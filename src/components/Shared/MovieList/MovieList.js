@@ -1,7 +1,7 @@
 import React from 'react';
 import Movie from '../Movie/Movie';
 
-const MovieList = ({ movies, baseURL, addToWatchlist, opt, watchlistIds,  watchedIds }) => {     
+const MovieList = ({ movies, baseURL, addToWatchlist, opt, watchlistIds,  watchedIds, dislikeIds }) => {     
     return(
         <div>
             {
@@ -20,6 +20,7 @@ const MovieList = ({ movies, baseURL, addToWatchlist, opt, watchlistIds,  watche
                         opt={opt}
                         watchlistIds={watchlistIds}
                         watchedIds={watchedIds}                        
+                        dislikeIds={dislikeIds}
                         />
                 })    
             }

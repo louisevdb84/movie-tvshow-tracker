@@ -1,4 +1,4 @@
-.Watchlist, .Watched{
+.Watchlist, .Watched, .Dislike{
     margin-top: 10px; 
     text-align: right;
     margin-right: 10px;    
@@ -32,6 +32,19 @@
     padding-bottom: 5px;
     border-radius: 5px;
 
+}
+
+.Dislike span{
+    margin-top: 5px;    
+   color: whitesmoke;
+    padding-left: 50px;
+    padding-right: 200px;
+    padding-top: 0px;
+    padding-bottom: 300px;
+   
+    background: url('ThumbsDown.png');
+    background-size: cover;
+    background-position: center;
 }
 
 .grow{

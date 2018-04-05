@@ -16,6 +16,7 @@ class NowPlaying extends Component {
       genreList: [],     
       watchlistIds: [],
       watchedIds: [],
+      dislikeIds: [],
       backupMovies: [],
       totalPages: 0,
       page: 1
@@ -26,6 +27,7 @@ class NowPlaying extends Component {
     this.getPages();     
     this.getWatchlist(); 
     this.getWatched(); 
+    this.getDislike();
     this.getMovies();
   }
 
@@ -72,10 +74,10 @@ class NowPlaying extends Component {
     }  
   }
 
-  randomPage = () => {
+  randomPage = () => {  
     this.getPages();
     this.setState({ page:  Math.floor((Math.random() * this.state.totalPages) + 1) })
-    this.getMovies();
+    this.getMovies();    
   }
 
   getMovies = () => {
@@ -207,9 +209,25 @@ class NowPlaying extends Component {
       })
   }  
 
+  getDislike = () => {
+    fetch('https://safe-bayou-79396.herokuapp.com/dislike', {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: sessionStorage.getItem("user")
+      })
+    })
+      .then(response => response.json())
+      .then(list => {
+        if (list) {
+          this.setState({ dislikeIds: list });          
+        }
+      })
+  }  
+
    
   render() {         
-    const { nowPlaying, baseURL, genreList,watchlistIds,  watchedIds} = this.state;
+    const { nowPlaying, baseURL, genreList,watchlistIds,  watchedIds, dislikeIds} = this.state;
     console.log(nowPlaying)
     return (        
       
@@ -226,7 +244,7 @@ class NowPlaying extends Component {
           {nowPlaying.length > 0 ?
             <div>
                 <Pagination totalPages={this.state.totalPages} page={this.state.page} prevPage={this.prevPage} nextPage={this.nextPage} randomPage={this.randomPage}></Pagination>
-                <MovieList movies={nowPlaying} baseURL={baseURL} opt="Movies" watchlistIds={watchlistIds} watchedIds={watchedIds} />              
+              <MovieList movies={nowPlaying} baseURL={baseURL} opt="Movies" watchlistIds={watchlistIds} watchedIds={watchedIds} dislikeIds={dislikeIds} />              
                 <Pagination totalPages={this.state.totalPages} page={this.state.page} prevPage={this.prevPage} nextPage={this.nextPage} ></Pagination>
             </div>      
               : <p>Loading</p>
