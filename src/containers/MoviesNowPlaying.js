@@ -45,7 +45,7 @@ class NowPlaying extends Component {
   prevPage = () => {   
     
     this.getPages();
-
+   
     if (this.state.page > 1 || this.state.page <= this.state.totalPages)
     {
       this.setState({ page: this.state.page - 1 });      
@@ -61,7 +61,7 @@ class NowPlaying extends Component {
   nextPage = () => {  
     
     this.getPages();
-
+   
     if (this.state.page < this.state.totalPages)
     {
       this.setState({ page: this.state.page + 1 })

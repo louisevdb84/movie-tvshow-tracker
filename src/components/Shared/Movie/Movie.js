@@ -236,12 +236,18 @@ class Movie extends React.Component {
             }
         }    
     }
-    componentDidMount() {        
+    componentDidMount() {                
         this.addFeedback();
     }
-    componentWillReceiveProps() {        
+    componentWillReceiveProps() {                    
         this.addFeedback();
     }
+
+    componentDidUpdate(prevProps, prevState) {  
+        if (prevProps.id !== this.props.id) {
+            this.addFeedback();
+        }
+      }
     
     render() {
         
@@ -309,7 +315,7 @@ class Movie extends React.Component {
                                             <span>
                                                 <button onClick={this.addToWatchlist} id={id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-purple pointer">Add to Watchlist</button>
                                                 <button onClick={this.addToWatched} id={id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-blue pointer">Watched</button>
-                                                <button onClick={this.addToDislike} id={id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-blue pointer">Dislike</button>        
+                                                <button onClick={this.addToDislike} id={id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-purple pointer">Dislike</button>        
                                             </span>    
                                     }                                    
                                 </span>
