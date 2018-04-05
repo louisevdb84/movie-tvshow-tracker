@@ -30,13 +30,20 @@ class NowPlaying extends Component {
       .then(genre => { 
         this.setState({genreList: genre.genres, genres: genre});           
 
-            fetch('https://safe-bayou-79396.herokuapp.com/nowPlaying')
+        fetch('https://safe-bayou-79396.herokuapp.com/nowPlaying', {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              page: 1
+          })
+            })
               .then(response => response.json())
               .then(mov => { this.setState({ nowPlaying: this.addingGenres(mov,genre),backupMovies: this.addingGenres(mov, genre), }) })       
 
       })  
       
   }
+  
 
   addingGenres = (mov, genre) => {
     mov.forEach(m => {                          
@@ -144,7 +151,7 @@ class NowPlaying extends Component {
    
   render() {         
     const { nowPlaying, baseURL, genreList,watchlistIds,  watchedIds} = this.state;
-    
+    console.log(nowPlaying)
     return (        
       
         <div>      

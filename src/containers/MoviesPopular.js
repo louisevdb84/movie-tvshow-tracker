@@ -30,7 +30,13 @@ class Popular extends Component {
     .then(response => response.json())
       .then(genre => { 
         this.setState({genreList: genre.genres, genres: genre});           
-            fetch('https://safe-bayou-79396.herokuapp.com/popular')
+        fetch('https://safe-bayou-79396.herokuapp.com/popular', {
+              method: 'post',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                page: 1
+              })
+            })
             .then(response => response.json())
               .then(mov => { this.setState({ popular: this.addingGenres(mov,genre), backupMovies: this.addingGenres(mov, genre), })})    
       })  

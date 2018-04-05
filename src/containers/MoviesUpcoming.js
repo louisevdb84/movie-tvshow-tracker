@@ -29,7 +29,13 @@ class Movies extends Component {
     .then(response => response.json())
       .then(genre => { 
         this.setState({genreList: genre.genres, genres: genre});
-            fetch('https://safe-bayou-79396.herokuapp.com/upcomingMovies')
+        fetch('https://safe-bayou-79396.herokuapp.com/upcomingMovies', {
+              method: 'post',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                page: 1
+            })
+        })
               .then(response => response.json())
               .then(mov => {
                 this.setState({
