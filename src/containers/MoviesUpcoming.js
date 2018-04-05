@@ -25,6 +25,12 @@ class Movies extends Component {
     this.getWatchlist(); 
     this.getWatched(); 
 
+
+    // fetch('https://safe-bayou-79396.herokuapp.com/upcomingMovies')        
+    // .then(response => response.json())
+    // .then(mov => {});             
+
+
     fetch('https://safe-bayou-79396.herokuapp.com/genres')
     .then(response => response.json())
       .then(genre => { 
@@ -36,13 +42,13 @@ class Movies extends Component {
                 page: 1
             })
         })
-              .then(response => response.json())
-              .then(mov => {
-                this.setState({
-                  upcomingMovies: this.addingGenres(mov, genre),                  
-                  backupMovies: this.addingGenres(mov, genre),                  
-                })
-              });             
+        .then(response => response.json())
+        .then(mov => {
+          this.setState({
+            upcomingMovies: this.addingGenres(mov, genre),                  
+            backupMovies: this.addingGenres(mov, genre),                  
+          })
+        });             
            
       })  
       
