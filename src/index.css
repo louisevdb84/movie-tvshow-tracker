@@ -14,6 +14,7 @@ body {
 h1.moviesheading{
   padding-top: 10px;
   padding-bottom: 10px;
+  text-align: center;
 }
 
 /* @media screen and (max-width: 1000px)

@@ -39,9 +39,8 @@ class Movie extends React.Component {
             router.stateService.go('login');
         }
     }    
+       
         
-    
-     
     addToWatched = (event) => {        
         if (sessionStorage.getItem("user")) {
         var mid = event.target.id;
@@ -194,7 +193,7 @@ class Movie extends React.Component {
                     <div className="db pv3 ph3 ph0-l no-underline black dim"></div>
                     <div className="flex flex-column flex-row-ns">
                         <div className="pr3-ns mb4 mb0-ns w-100 w-20-ns">
-                        <img src={baseURL + poster_path} className="db" alt="moviePoster"/>
+                        <img src={baseURL + poster_path} className="db" alt="No movie poster available"/>
                         </div>
                         <div className="w-100 w-80-ns pl3-ns">
                                 <h1 className="f3 fw1 baskerville mt0 lh-title">{title}</h1>

@@ -1,0 +1,9 @@
+.navButtons{
+    margin : 10px;   
+     
+}
+
+.navButtons button{
+    padding: 7px;
+    margin: 5px;
+}

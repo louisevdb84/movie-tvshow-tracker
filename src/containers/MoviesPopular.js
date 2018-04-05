@@ -3,6 +3,7 @@ import MovieList from '../components/Shared/MovieList/MovieList';
 
  import Options from "../components/Movies/Options/Options";
 import Navbar from '../components/Shared/Navbar/Navbar';
+import Pagination from '../components/Movies/Pagination';
 
 
 class Popular extends Component {  
@@ -15,32 +16,93 @@ class Popular extends Component {
       genreList: [],     
       watchlistIds: [],
       watchedIds: [],
-      backupMovies: []
+      backupMovies: [],
+      totalPages: 0,
+      page: 1
       
     }        
   }
 
 
-  componentDidMount() {  
-
+  componentDidMount() {     
+    this.getPages();     
     this.getWatchlist(); 
     this.getWatched(); 
+    this.getMovies();
+  }
 
+  getPages = () => {
+    fetch('https://safe-bayou-79396.herokuapp.com/countPopular')        
+    .then(response => response.json())
+      .then(count =>
+      {
+        this.setState({ totalPages: count })
+        console.log("Total Pages " + this.state.totalPages)          
+      })  
+      .catch(err => { console.log(err) });
+  }
+
+  prevPage = () => {   
+    
+    this.getPages();
+
+    if (this.state.page > 1 || this.state.page <= this.state.totalPages)
+    {
+      this.setState({ page: this.state.page - 1 });      
+      this.getMovies();
+    }  
+    else if (this.state.page > this.state.totalPages)
+    {
+      this.setState({ page: this.state.totalPages });    
+      this.getMovies();
+    }
+      
+  }
+  nextPage = () => {  
+    
+    this.getPages();
+
+    if (this.state.page < this.state.totalPages)
+    {
+      this.setState({ page: this.state.page + 1 })
+      this.getMovies();
+    }        
+    else
+    {
+      this.setState({ page: this.state.totalPages })
+      this.getMovies();
+    }  
+  }
+
+  randomPage = () => {
+    this.getPages();
+    this.setState({ page:  Math.floor((Math.random() * this.state.totalPages) + 1) })
+    this.getMovies();
+  }
+
+  getMovies = () => {
     fetch('https://safe-bayou-79396.herokuapp.com/genres')
     .then(response => response.json())
       .then(genre => { 
-        this.setState({genreList: genre.genres, genres: genre});           
-        fetch('https://safe-bayou-79396.herokuapp.com/popular', {
-              method: 'post',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                page: 1
-              })
+        this.setState({genreList: genre.genres, genres: genre});
+            fetch('https://safe-bayou-79396.herokuapp.com/popular', {
+                  method: 'post',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    page: this.state.page
+                })
             })
             .then(response => response.json())
-              .then(mov => { this.setState({ popular: this.addingGenres(mov,genre), backupMovies: this.addingGenres(mov, genre), })})    
+              .then(mov => {
+              if(mov.length>0)
+                this.setState({
+                  popular: this.addingGenres(mov, genre),                  
+                  backupMovies: this.addingGenres(mov, genre),                  
+                })
+            })             
+            .catch(err => { console.log(err) });
       })  
-      
+      .catch(err => { console.log(err) });
   }
 
   addingGenres = (mov, genre) => {
@@ -165,7 +227,11 @@ class Popular extends Component {
            <h1 className="moviesheading">Popular Movies</h1>
           {!sessionStorage.getItem("user") ? <div style={{ "background": "red", "color": "white"}}>Your are not signed in</div> : <div></div>}
           {popular.length > 0 ?
-            <MovieList movies={popular} baseURL={baseURL} opt="Movies" watchlistIds={watchlistIds} watchedIds={watchedIds}/>              
+            <div>
+                <Pagination totalPages={this.state.totalPages} page={this.state.page} prevPage={this.prevPage} nextPage={this.nextPage} randomPage={this.randomPage}></Pagination>
+                <MovieList movies={popular} baseURL={baseURL} opt="Movies" watchlistIds={watchlistIds} watchedIds={watchedIds} />              
+                <Pagination totalPages={this.state.totalPages} page={this.state.page} prevPage={this.prevPage} nextPage={this.nextPage} randomPage={this.randomPage}></Pagination>
+             </div>           
               : <p>Loading</p>
               }
           </div>   
