@@ -48,7 +48,7 @@ class Popular extends Component {
     
     this.getPages();
 
-    if (this.state.page > 1 || this.state.page <= this.state.totalPages)
+    if (this.state.page > 1 && this.state.page <= this.state.totalPages)
     {
       this.setState({ page: this.state.page - 1 });      
       this.getMovies();
@@ -58,6 +58,7 @@ class Popular extends Component {
       this.setState({ page: this.state.totalPages });    
       this.getMovies();
     }
+    window.scrollTo(0, 0);
       
   }
   nextPage = () => {  
@@ -73,13 +74,15 @@ class Popular extends Component {
     {
       this.setState({ page: this.state.totalPages })
       this.getMovies();
-    }  
+    } 
+    window.scrollTo(0, 0);
   }
 
   randomPage = () => {
     this.getPages();
     this.setState({ page:  Math.floor((Math.random() * this.state.totalPages) + 1) })
     this.getMovies();
+    window.scrollTo(0, 0);
   }
 
   getMovies = () => {

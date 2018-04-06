@@ -46,7 +46,7 @@ class NowPlaying extends Component {
     
     this.getPages();
    
-    if (this.state.page > 1 || this.state.page <= this.state.totalPages)
+    if (this.state.page > 1 && this.state.page <= this.state.totalPages)
     {
       this.setState({ page: this.state.page - 1 });      
       this.getMovies();
@@ -56,7 +56,7 @@ class NowPlaying extends Component {
       this.setState({ page: this.state.totalPages });   
       this.getMovies();
     }
-      
+    window.scrollTo(0, 0);
   }
   nextPage = () => {  
     
@@ -72,12 +72,14 @@ class NowPlaying extends Component {
       this.setState({ page: this.state.totalPages })
       this.getMovies();
     }  
+    window.scrollTo(0, 0);
   }
 
   randomPage = () => {  
     this.getPages();
     this.setState({ page:  Math.floor((Math.random() * this.state.totalPages) + 1) })
     this.getMovies();    
+    window.scrollTo(0, 0);
   }
 
   getMovies = () => {
@@ -245,7 +247,7 @@ class NowPlaying extends Component {
             <div>
                 <Pagination totalPages={this.state.totalPages} page={this.state.page} prevPage={this.prevPage} nextPage={this.nextPage} randomPage={this.randomPage}></Pagination>
               <MovieList movies={nowPlaying} baseURL={baseURL} opt="Movies" watchlistIds={watchlistIds} watchedIds={watchedIds} dislikeIds={dislikeIds} />              
-                <Pagination totalPages={this.state.totalPages} page={this.state.page} prevPage={this.prevPage} nextPage={this.nextPage} ></Pagination>
+              <Pagination totalPages={this.state.totalPages} page={this.state.page} prevPage={this.prevPage} nextPage={this.nextPage} randomPage={this.randomPage}></Pagination>
             </div>      
               : <p>Loading</p>
               }
