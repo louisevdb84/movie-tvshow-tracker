@@ -37,16 +37,107 @@
 .Dislike span{
     margin-top: 5px;    
    color: whitesmoke;
-    padding-left: 50px;
-    padding-right: 200px;
+    padding-left: 25px;
+    padding-right: 100px;
     padding-top: 0px;
-    padding-bottom: 300px;
+    padding-bottom: 150px;
    
     background: url('ThumbsDown.png');
-    background-size: cover;
+    background-size: 100px;
+    background-repeat: no-repeat;
     background-position: center;
 }
 
 .grow{
     -webkit-transform: none;
 }
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#content {
+    display: inline-block;        
+    padding: 20px;
+
+}
+
+.cast{    
+    display:inline-block;
+    padding: 10px;    
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin: 10px;
+}
+
+/* Tooltip container */
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+ 
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+.cast_trailers{
+    padding-top: 5px;
+}
+
+.cast_trailers a{
+    padding: 5px;
+    text-decoration: underline;
+    cursor: pointer;
+
+}
+

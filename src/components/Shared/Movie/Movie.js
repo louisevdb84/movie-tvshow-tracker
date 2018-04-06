@@ -11,9 +11,98 @@ class Movie extends React.Component {
             feedback: "",
             watchlistIds : this.props.watchlistIds,
             watchedIds: this.props.watchedIds,
-            dislikeIds: this.props.dislikeIds
+            dislikeIds: this.props.dislikeIds,
+            baseURL: "http://image.tmdb.org/t/p/w185/"
         }
     }
+
+    displayModal = (cast) => {                        
+        var modal = document.getElementById('myModal');
+        var span = document.getElementsByClassName("close")[0];       
+        var content = document.getElementById('content');      
+        content.innerHTML = "";       
+        var title = document.getElementById('title');
+        
+        title.innerHTML = this.props.title;
+        
+        modal.style.display = "block";
+        
+        cast.forEach((c) => {
+            if (c.profile_path != null) {
+                var div = document.createElement("div");
+                div.className = "cast";
+
+                var pic = document.createElement("img");
+                pic.setAttribute('src', this.state.baseURL + c.profile_path);
+                pic.setAttribute('alt', 'na');
+                pic.setAttribute('height', '200px');                            
+
+                var name = document.createElement("p");
+                var nameText = document.createTextNode(c.name);
+                name.appendChild(nameText);
+
+                div.appendChild(pic);
+                div.appendChild(name);
+                content.appendChild(div);    
+            }
+            
+        })      
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        }
+    }
+
+
+    getCast = () => {        
+        fetch('https://safe-bayou-79396.herokuapp.com/cast', {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              id: this.props.id
+          })
+      })
+        .then(response => response.json())
+            .then(cast => {
+                if (cast.cast.length > 1) {                                        
+                    this.displayModal(cast.cast);
+                }
+                
+        })          
+        .catch(err => { console.log(err) });
+    }
+
+    getTrailers = () => {
+        
+        fetch('https://safe-bayou-79396.herokuapp.com/trailers', {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              id: this.props.id
+          })
+      })
+        .then(response => response.json())
+            .then(trailers => {                
+                if (trailers.results.length > 1) {
+                    window.open("https://www.youtube.com/watch?v=" + trailers.results[0].key, "_blank");                
+                }
+                else {
+                    alert("There's no trailers for this movie");
+                }
+                    
+
+                
+        })          
+        .catch(err => { console.log(err) });
+    }
+
     addToWatchlist = (event) => {
         if (sessionStorage.getItem("user")) {
             var mid = event.target.id;
@@ -227,7 +316,7 @@ class Movie extends React.Component {
             
                 if (Number(w.movieid) === Number(this.props.id))
                 {
-                    this.setState({ feedback: "Dislike" });
+                    this.setState({ feedback: "Dislike" });                    
                     found = true;                    
                 }                   
             });
@@ -237,7 +326,7 @@ class Movie extends React.Component {
         }    
     }
     componentDidMount() {                
-        this.addFeedback();
+        this.addFeedback();        
     }
     componentWillReceiveProps() {                    
         this.addFeedback();
@@ -292,7 +381,30 @@ class Movie extends React.Component {
                                 {overview}
                             </p>
                     
-                            <p className="f6 lh-copy mv0">{release_date}</p>
+                                <p className="f6 lh-copy mv0">{release_date}</p>
+
+                                <div className="cast_trailers">
+                                    <a onClick={this.getCast}>Cast</a>
+                                    <a className="tooltip" onClick={this.getTrailers}>Trailer
+                                        <span class="tooltiptext">Enable pop-ups for this site to be able to view trailer</span>
+                                    </a>
+                                </div>
+                                
+
+
+
+                                <div id="myModal" class="modal">
+                                    <div class="modal-content">
+                                            <div class="modal-header">
+                                                <span class="close">&times;</span>
+                                            <h2 id="title"></h2>
+                                            </div>
+                                        <div class="modal-body">
+                                            <div id="content"></div>                                               
+                                        </div>        
+                                    </div>
+                                </div>
+                               
                             <br />        
                             {opt === "Movies" ?
                                 <span>
