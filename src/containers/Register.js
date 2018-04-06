@@ -3,6 +3,8 @@ import React from 'react';
 import { UISref } from '@uirouter/react';
 import { router } from '../router.config';
 
+import './Login.css';
+
 class Register extends React.Component { 
 
   onSubmitSignIn = () => {
@@ -46,8 +48,8 @@ class Register extends React.Component {
         <div class="">
           <button onClick={this.onSubmitSignIn} value="Register" className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" type="submit">Register</button>
         </div>
-        <div class="lh-copy mt3">
-          <UISref to="login"><a className="f6 link dim black db">Sign In</a></UISref>    
+        <div class="lh-copy mt3" id="login">
+            <UISref to="login"><a className="f6 link dim black db">Sign In</a></UISref>    
           <UISref to="home"><a className="f6 link dim black db">Home</a></UISref>      
         </div>
       </div>

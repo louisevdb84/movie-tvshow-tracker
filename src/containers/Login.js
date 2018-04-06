@@ -1,7 +1,9 @@
 import React from 'react';
 
 import { router } from '../router.config';
-import { UISref} from '@uirouter/react';
+import { UISref } from '@uirouter/react';
+
+import './Login.css';
 
 class Login extends React.Component {  
 
@@ -48,7 +50,7 @@ class Login extends React.Component {
           <div class="">
             <button onClick={this.onSubmitSignIn} value="Signin" className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" type="submit">Sign In</button>
           </div>
-          <div class="lh-copy mt3">
+          <div class="lh-copy mt3" id="login">
             <UISref to="register"><a className="f6 link dim black db">Register</a></UISref>    
             <UISref to="home"><a className="f6 link dim black db">Home</a></UISref>      
           </div>
