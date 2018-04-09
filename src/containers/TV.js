@@ -29,7 +29,8 @@ class TVShows extends React.Component {
             })
         })
         .then(response => response.json())
-            .then(show => {                
+            .then(show => {
+                console.log(show);
                 if(show.results.length>0)
                 this.setState({
                     TVShows: show.results,   

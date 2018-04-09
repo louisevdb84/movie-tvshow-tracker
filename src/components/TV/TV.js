@@ -1,5 +1,7 @@
 import React from 'react';
 import './TV.css';
+import Feedback from './Feedback';
+import UserFeedbackControls from './UserFeedbackControls';
 
 class TV extends React.Component {     
     render() {
@@ -8,7 +10,8 @@ class TV extends React.Component {
             first_air_date, overview, baseURL } = this.props;        
         return (            
             <section className="mw8 center avenir bg-light-gray">  
-                <article className="bt bb b--black-10">                    
+                <article className="bt bb b--black-10">    
+                <Feedback></Feedback>
                 <div className="db pv3 ph3 ph0-l no-underline black dim"></div>
                 <div className="flex flex-column flex-row-ns">
                     <div className="pr3-ns mb4 mb0-ns w-100 w-20-ns">
@@ -20,8 +23,9 @@ class TV extends React.Component {
                         <p className="f6 f5-l lh-copy">{overview}</p>                
                         <p className="f6 lh-copy mv0">{first_air_date}</p>                            
                         <br />                                    
-                    </div>
-                </div>    
+                        <UserFeedbackControls></UserFeedbackControls>        
+                    </div>                        
+                </div>                      
                 </article>
             </section>    
         );
