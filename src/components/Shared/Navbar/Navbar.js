@@ -28,7 +28,10 @@ const Navbar = () => {
                 <div class="dropdown">
                     <a class="dim dib mr3">TV</a>
                     <div class="dropdown-content">                    
-                        <UISrefActive class="active"><UISref to="TVpopular" params={{ username: sessionStorage.getItem("user") }}><a className="dib mr3">Popular</a></UISref></UISrefActive>                     
+                            <UISrefActive class="active"><UISref to="TVpopular" params={{ username: sessionStorage.getItem("user") }}><a className="dib mr3">Popular</a></UISref></UISrefActive>                     
+                            <UISrefActive class="active"><UISref to="TVairingToday" params={{ username: sessionStorage.getItem("user") }}><a className="dib mr3">Airing Today</a></UISref></UISrefActive>                     
+                            <UISrefActive class="active"><UISref to="TVOnTheAir" params={{ username: sessionStorage.getItem("user") }}><a className="dib mr3">On The Air</a></UISref></UISrefActive>                     
+                            <UISrefActive class="active"><UISref to="TVTopRated" params={{ username: sessionStorage.getItem("user") }}><a className="dib mr3">Top Rated</a></UISref></UISrefActive>                     
                     </div>
                 </div>
            

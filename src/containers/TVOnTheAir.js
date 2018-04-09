@@ -1,13 +1,13 @@
 import React from 'react';
 import TV from './TV';
 
-class TVPopular extends React.Component {            
+class TVOnTheAir extends React.Component {            
     render() {               
         return (    
             <div>                
-                <TV TypeShowList = "popularTV"></TV>                                        
+                <TV TypeShowList = "onTheAirTV"></TV>                                        
             </div>    
         )    
     }
 }   
-export default TVPopular;
+export default TVOnTheAir;

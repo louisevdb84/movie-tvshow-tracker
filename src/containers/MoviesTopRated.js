@@ -3,7 +3,7 @@ import MovieList from '../components/Shared/MovieList/MovieList';
 
  import Options from "../components/Movies/Options/Options";
 import Navbar from '../components/Shared/Navbar/Navbar';
-import Pagination from '../components/Movies/Pagination';
+import Pagination from '../components/Shared/Pagination';
 
 
 class Movies extends Component {  

@@ -9,12 +9,15 @@ import Register from './containers/Register';
 import Watchlist from './containers/Watchlist';
 
 import TVPopular from './containers/TVPopular';
+import TVAiringToday from './containers/TVAiringToday';
+import TVOnTheAir from './containers/TVOnTheAir';
+import TVTopRated from './containers/TVTopRated';
 
 
 const appState = {
     name: 'app',
-    redirectTo: 'home',
-    component: Home
+    redirectTo: 'movies/:username',
+    component: Movies
 };
   
 const homeState = {
@@ -79,6 +82,27 @@ const TVPopularState = {
     component: TVPopular
 };
 
+const TVAiringTodayState = {    
+    name: 'TVairingToday',
+    url: '/TVairingToday/:username',
+    params: {entry: null},
+    component: TVAiringToday
+};
+
+const TVOnTheAirState = {    
+    name: 'TVOnTheAir',
+    url: '/TVOnTheAir/:username',
+    params: {entry: null},
+    component: TVOnTheAir
+};
+
+const TVTopRatedState = {    
+    name: 'TVTopRated',
+    url: '/TVTopRated/:username',
+    params: {entry: null},
+    component: TVTopRated
+};
+
 //#endregion
   
   const loginState = {    
@@ -94,4 +118,4 @@ const registerState = {
 };
 
 
-export default [TVPopularState, popularState, nowPlayingState, topRatedState, upcomingState, watchlistState, moviesState, registerState, homeState, appState, loginState];
+export default [TVOnTheAirState,TVTopRatedState, TVAiringTodayState,TVPopularState, popularState, nowPlayingState, topRatedState, upcomingState, watchlistState, moviesState, registerState, homeState, appState, loginState];
