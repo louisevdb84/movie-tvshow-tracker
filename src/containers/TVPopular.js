@@ -5,7 +5,7 @@ class TVPopular extends React.Component {
     render() {               
         return (    
             <div>                
-                <TV TypeShowList = "popularTV"></TV>                                        
+                <TV TypeShowList = "popularTV" heading = "Popular TV Shows"></TV>                                        
             </div>    
         )    
     }
