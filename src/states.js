@@ -8,6 +8,8 @@ import Login from './containers/Login';
 import Register from './containers/Register';
 import Watchlist from './containers/Watchlist';
 
+import TVPopular from './containers/TVPopular';
+
 
 const appState = {
     name: 'app',
@@ -15,13 +17,14 @@ const appState = {
     component: Home
 };
   
-
 const homeState = {
     parent: 'app',
     name: 'home',
     url: '/',
     component: Home
 };
+
+//#region Movies
 
 const moviesState = {    
     name: 'movies',
@@ -56,7 +59,27 @@ const nowPlayingState = {
     url: '/nowPlaying/:username',
     params: {entry: null},
     component: NowPlaying
-  };
+};
+  
+
+const watchlistState = {    
+    name: 'watchlist',
+    url: '/watchlist/:username',
+    component: Watchlist
+};
+
+//#endregion Movies
+
+//#region TVShows
+
+const TVPopularState = {    
+    name: 'TVpopular',
+    url: '/TVpopular/:username',
+    params: {entry: null},
+    component: TVPopular
+};
+
+//#endregion
   
   const loginState = {    
     name: 'login',
@@ -70,10 +93,5 @@ const registerState = {
     component: Register
 };
 
-const watchlistState = {    
-    name: 'watchlist',
-    url: '/watchlist/:username',
-    component: Watchlist
-};
 
-export default [popularState, nowPlayingState, topRatedState, upcomingState, watchlistState, moviesState, registerState, homeState, appState, loginState];
+export default [TVPopularState, popularState, nowPlayingState, topRatedState, upcomingState, watchlistState, moviesState, registerState, homeState, appState, loginState];

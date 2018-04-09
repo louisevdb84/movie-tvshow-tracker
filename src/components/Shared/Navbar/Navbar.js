@@ -14,8 +14,6 @@ const Navbar = () => {
         <div className = "navbar">                               
         <header className="custom-bg fixed w-100 ph3 pv3 pv4-ns ph4-m ph5-l">
                 <nav className="f6 fw6 ttu tracked moviesheading">
-                    
-                <UISrefActive class="active"><UISref to="home" params={{ username: sessionStorage.getItem("user") }}><a className="link dim dib mr3">Home</a></UISref></UISrefActive>
             
                     <div class="dropdown">
                         <a class="dim dib mr3">Movies</a>
@@ -26,6 +24,13 @@ const Navbar = () => {
                         <UISrefActive class="active"><UISref to="nowPlaying"  params={{ username: sessionStorage.getItem("user") }}><a className="mr3">Now Playing</a></UISref></UISrefActive>   
                         </div>
                     </div>
+
+                <div class="dropdown">
+                    <a class="dim dib mr3">TV</a>
+                    <div class="dropdown-content">                    
+                        <UISrefActive class="active"><UISref to="TVpopular" params={{ username: sessionStorage.getItem("user") }}><a className="dib mr3">Popular</a></UISref></UISrefActive>                     
+                    </div>
+                </div>
            
                     <UISrefActive class="active"><UISref to="watchlist" params={{ username: sessionStorage.getItem("user") }}><a className="link dim mr3">Watchlist</a></UISref></UISrefActive>                     
             

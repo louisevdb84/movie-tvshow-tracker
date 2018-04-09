@@ -180,7 +180,7 @@ class Movies extends Component {
       this.setState({ upcomingMovies: movieGenres })      
     }        
     else
-      alert("No movies in that genre");
+      alert("No movies on this page in that genre");
   })
 
   getWatchlist = () => {
