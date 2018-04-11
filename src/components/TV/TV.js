@@ -29,6 +29,7 @@ class TV extends React.Component {
                 if (details) { 
                     Object.assign(show, details);                  
                     this.setState({ TVShow: show });
+                    console.log(details)
                     return details;
                 }                                                    
              })             
@@ -38,11 +39,11 @@ class TV extends React.Component {
     render() {
         
         const { name, vote_average, poster_path,
-            first_air_date, overview, baseURL, genres, show } = this.props;        
+            first_air_date, overview, baseURL, show } = this.props;        
         return (            
             <section className="mw8 center avenir bg-light-gray">  
                 <article className="bt bb b--black-10">    
-                <Feedback></Feedback>
+                
                 <div className="db pv3 ph3 ph0-l no-underline black dim"></div>
                 <div className="flex flex-column flex-row-ns">
                     <div className="pr3-ns mb4 mb0-ns w-100 w-20-ns">
@@ -51,20 +52,21 @@ class TV extends React.Component {
                     <div className="w-100 w-80-ns pl3-ns">
                             <h1 className="f3 fw1 baskerville mt0 lh-title">{name}</h1>   
                             {
-                                (genres) ?
-                                    genres.map((genre, i) => {
+                                (show.genres) ?
+                                    show.genres.map((genre, i) => {
                                         return <strong><span key={i}>{genre.name + ", "}</span></strong>
                                     })
                                     :<span></span>
                                 }    
                             <br />
                             <br />
-                        <p className="f6 lh-copy mv0">{"Rating: " + vote_average}</p>
-                            <p className="f6 f5-l lh-copy">{overview}</p>                          
-                            <p className="f6 f5-l lh-copy">{show.type}</p>        
-                        <p className="f6 lh-copy mv0">{first_air_date}</p>                            
+                            <p className="f6 lh-copy mv0">{"Rating: " + vote_average}</p>
+                            <p className="f6 f5-l lh-copy">Number of Seasons: {show.number_of_seasons}</p>  
+                            <p className="f6 f5-l lh-copy">{overview}</p>                                                 
+                            <p className="f6 f5-l lh-copy"><strong>Status: {show.status}</strong></p>                
+                            <p className="f6 lh-copy mv0">First Air Date: {first_air_date}</p>                            
                         <br />                                    
-                        <UserFeedbackControls></UserFeedbackControls>        
+                        
                     </div>                        
                 </div>                      
                 </article>
@@ -74,3 +76,10 @@ class TV extends React.Component {
 }
 export default TV;
 
+// Networks: { 
+//     (show.networks) ?
+//         show.networks.map((network, i) => {
+//             return <span key={i}>{network.name + ", "}</span>
+//         })
+//         :<span></span>
+//     } 
