@@ -20,6 +20,7 @@ class TVList extends React.Component {
                             baseURL={baseURL}
                             genres={TVShow.genres}
                             show={TVShow}
+                            watchlistIds={this.props.watchlistIds} getWatchlist={this.props.getWatchlist}
                         />
                     })
                 }

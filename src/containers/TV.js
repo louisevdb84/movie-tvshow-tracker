@@ -9,7 +9,8 @@ class TVShows extends React.Component {
         super()
         this.state = {
             baseURL: "http://image.tmdb.org/t/p/w185/",   
-            TVShows: [],             
+            TVShows: [],     
+            watchlistIds : [],           
             page: 1,
             totalPages: 0            
         }        
@@ -21,6 +22,7 @@ class TVShows extends React.Component {
             totalPages: 0
         });
         this.getTVShows();
+        this.getWatchlist();
     }
 
     getTVShows = () => {        
@@ -84,6 +86,23 @@ class TVShows extends React.Component {
         window.scrollTo(0, 0);
     }   
 
+    getWatchlist = () => {        
+        return fetch('https://safe-bayou-79396.herokuapp.com/watchlistTV', {
+          method: 'post',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: sessionStorage.getItem("user")
+          })
+        })
+          .then(response => response.json())
+          .then(list => {
+            if (list) {
+                this.setState({ watchlistIds: list });               
+                return list;
+            }
+          })
+      }  
+
     render() {
         const { baseURL, TVShows, Oops } = this.state;
         return (
@@ -97,7 +116,7 @@ class TVShows extends React.Component {
                             {(Oops) ?                                
                                     <h3 style={{"color" : "red"}}>{Oops}</h3>                                
                                 : <span></span>}
-                        <TVList TVShows={TVShows} baseURL={baseURL}></TVList>                
+                            <TVList TVShows={TVShows} baseURL={baseURL} watchlistIds={this.state.watchlistIds} getWatchlist={this.getWatchlist} ></TVList>                
                         <Pagination totalPages={this.state.totalPages} page={this.state.page} prevPage={this.prevPage} nextPage={this.nextPage} randomPage={this.randomPage}></Pagination>
                     </div>
                     :<p className="tvContainer">Loading</p>

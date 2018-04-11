@@ -3,16 +3,29 @@ import './TV.css';
 import Feedback from './Feedback';
 import UserFeedbackControls from './UserFeedbackControls';
 
+import { router } from '../../router.config';
+
 class TV extends React.Component {     
-    
+    constructor(props) {
+        super(props);
+        this.state = {
+            feedback: "",
+            watchlistIds: this.props.watchlistIds,            
+            baseURL: "http://image.tmdb.org/t/p/w185/"
+        }
+    }     
+
     componentDidMount() {  
         const { show } = this.props;
-        this.fetchDetails(show);
+        this.fetchDetails(show);      
+        this.addFeedback();
     }
     componentDidUpdate(prevProps, prevState) {  
         const { id, show } = this.props;
         if (prevProps.id !== id) {
-            this.fetchDetails(show);
+            this.fetchDetails(show);            
+            this.addFeedback();
+            console.log(this.props.watchlistIds)
         }
     }
 
@@ -28,22 +41,91 @@ class TV extends React.Component {
             .then(details => {                   
                 if (details) { 
                     Object.assign(show, details);                  
-                    this.setState({ TVShow: show });
-                    console.log(details)
+                    this.setState({ TVShow: show });                    
                     return details;
                 }                                                    
              })             
             .catch(err => { console.log(err) });              
     }
 
-    render() {
+
+    addFeedback = () => {               
+        if (sessionStorage.getItem("user"))
+        {
+            var found = false;   
+            
+            this.state.watchlistIds.forEach(w => {                            
+                if (Number(w.tvid) === Number(this.props.id))
+                {                    
+                    this.setState({ feedback: "Watchlist" });
+                    found = true;                    
+                }                   
+            });
+            
+            if (!found) {
+                this.setState({ feedback: "" });
+            }
+        }    
+    }
+
+    addToWatchlist = (event) => {        
+        if (sessionStorage.getItem("user")) {
+            var mid = event.target.id;
+            fetch('https://safe-bayou-79396.herokuapp.com/addwatchlistTV', {
+                method: 'post',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    id: mid,
+                    username: sessionStorage.getItem("user")
+                })
+            })
+                .then(response => response.json())
+                .then(entry => {
+                    if (entry.length > 0) {                        
+                        this.props.getWatchlist().then(list=>this.setState({watchlistIds:list}, this.addFeedback));
+                    }
+                    else {
+                        alert(entry);
+                    }
+                })
+        }
+        else {
+            router.stateService.go('login');
+        }
+    }    
+
+    removeWatchlist = (event) => {
         
+        
+        var mid = "";
+        try {
+            mid = event.target.id;    
+        }
+        catch (err) {
+            mid = event;
+        }
+    
+        fetch('https://safe-bayou-79396.herokuapp.com/deletewatchlistTV', {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                id: mid,
+                username: sessionStorage.getItem("user")
+            })
+        })
+            .then(response => response.json())
+            .then(entry => {        
+                this.props.getWatchlist().then(list=>this.setState({watchlistIds:list},this.addFeedback));
+            }) 
+    }  
+
+    render() {        
         const { name, vote_average, poster_path,
             first_air_date, overview, baseURL, show } = this.props;        
         return (            
             <section className="mw8 center avenir bg-light-gray">  
                 <article className="bt bb b--black-10">    
-                
+                    <Feedback feedback={this.state.feedback}></Feedback>
                 <div className="db pv3 ph3 ph0-l no-underline black dim"></div>
                 <div className="flex flex-column flex-row-ns">
                     <div className="pr3-ns mb4 mb0-ns w-100 w-20-ns">
@@ -65,8 +147,10 @@ class TV extends React.Component {
                             <p className="f6 f5-l lh-copy">{overview}</p>                                                 
                             <p className="f6 f5-l lh-copy"><strong>Status: {show.status}</strong></p>                
                             <p className="f6 lh-copy mv0">First Air Date: {first_air_date}</p>                            
-                        <br />                                    
-                        
+                             <br />                                    
+                            
+                            <button onClick={this.addToWatchlist} id={this.props.id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-purple pointer">Add to Watchlist</button>
+                             <button onClick={this.removeWatchlist} id={this.props.id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-blue pointer">Remove from watchlist</button>
                     </div>                        
                 </div>                      
                 </article>
@@ -83,3 +167,5 @@ export default TV;
 //         })
 //         :<span></span>
 //     } 
+
+// <UserFeedbackControls id={this.props.id} getWatchlist={this.props.getWatchlist}></UserFeedbackControls>        
