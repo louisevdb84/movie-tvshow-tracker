@@ -9,14 +9,17 @@ class TVShows extends React.Component {
         super()
         this.state = {
             baseURL: "http://image.tmdb.org/t/p/w185/",   
-            TVShows: [],                          
+            TVShows: [],             
             page: 1,
-            totalPages : 0  
+            totalPages: 0            
         }        
     }
     
     componentDidMount() { 
-        this.setState({ TVShows: [] });
+        this.setState({
+            TVShows: [],   
+            totalPages: 0
+        });
         this.getTVShows();
     }
 
@@ -29,17 +32,28 @@ class TVShows extends React.Component {
             })
         })
         .then(response => response.json())
-            .then(show => {
-                console.log(show);
-                if(show.results.length>0)
-                this.setState({
-                    TVShows: show.results,   
-                    totalPages: show.total_pages
-                })
+            .then(show => {                                
+                if (show.results && show.results.length > 0) {                    
+                    this.setState({                        
+                        TVShows: show.results,
+                        totalPages: show.total_pages,
+                        Oops: ""
+                    });
+                } else {
+                    if (show.status_code === 25) {
+                        this.setState({                            
+                            Oops: "Too many Api requests, please slow down. You're too fast!"
+                        });
+                    } else {
+                        console.error('Broken', show);
+                    }
+                }
+                
       })             
-      .catch(err => { console.log(err) });
-    }
-
+            .catch(err => { console.log(err) });
+        
+    }   
+       
     prevPage = () => {      
         if (this.state.page > 1 && this.state.page <= this.state.totalPages)
         {
@@ -68,23 +82,26 @@ class TVShows extends React.Component {
     randomPage = () => {        
         this.setState({ page: Math.floor((Math.random() * this.state.totalPages) + 1) }, this.getTVShows);        
         window.scrollTo(0, 0);
-    }
-    
+    }   
 
-    render() {               
-        const { baseURL, TVShows } = this.state;        
-        return (            
+    render() {
+        const { baseURL, TVShows, Oops } = this.state;
+        return (
             <div>
-                <Navbar></Navbar>                
-                {(TVShows.length > 0) ?
+                <Navbar></Navbar>
+                {
+                    (TVShows.length > 0) ? 
                     <div className="tvContainer">
                         <h1>{this.props.heading}</h1>
-                        <Pagination totalPages={this.state.totalPages} page={this.state.page} prevPage={this.prevPage} nextPage={this.nextPage} randomPage={this.randomPage}></Pagination>
+                            <Pagination totalPages={this.state.totalPages} page={this.state.page} prevPage={this.prevPage} nextPage={this.nextPage} randomPage={this.randomPage}></Pagination>
+                            {(Oops) ?                                
+                                    <h3 style={{"color" : "red"}}>{Oops}</h3>                                
+                                : <span></span>}
                         <TVList TVShows={TVShows} baseURL={baseURL}></TVList>                
                         <Pagination totalPages={this.state.totalPages} page={this.state.page} prevPage={this.prevPage} nextPage={this.nextPage} randomPage={this.randomPage}></Pagination>
                     </div>
                     :<p className="tvContainer">Loading</p>
-                }                
+                }  
             </div>
         )    
     }
