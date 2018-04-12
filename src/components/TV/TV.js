@@ -180,10 +180,10 @@ class TV extends React.Component {
                             <br />
                             <p className="f6 lh-copy mv0">{"Rating: " + vote_average}</p>
                             <p className="f6 f5-l lh-copy">Number of Seasons: {show.number_of_seasons}</p>  
-                            {this.state.feedback==="Watchlist"?
+                            {this.state.feedback==="Watchlist" && this.state.seasons.length>0?
                                 <div>
                                     <label>Last Season Watched: </label>
-                                    <select onChange={this.updateSeason} id={show.id} value={this.state.season}>
+                                    <select onChange={this.updateSeason} id={show.id} defaultValue={this.state.season}>
                                         <option value="0">None</option>
                                         {this.state.seasons.map(season => {                                            
                                             return <option value={season}>Season {season}</option>
