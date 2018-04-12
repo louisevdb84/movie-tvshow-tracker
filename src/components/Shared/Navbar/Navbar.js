@@ -33,9 +33,17 @@ const Navbar = () => {
                             <UISrefActive class="active"><UISref to="TVOnTheAir" params={{ username: sessionStorage.getItem("user") }}><a className="dib mr3">On The Air</a></UISref></UISrefActive>                     
                             <UISrefActive class="active"><UISref to="TVTopRated" params={{ username: sessionStorage.getItem("user") }}><a className="dib mr3">Top Rated</a></UISref></UISrefActive>                     
                     </div>
+                    </div>
+                
+                <div class="dropdown">
+                    <a class="dim dib mr3">Watchlist</a>
+                    <div class="dropdown-content">                    
+                            <UISrefActive class="active"><UISref to="watchlist" params={{ username: sessionStorage.getItem("user") }}><a className="link dim mr3">Movies</a></UISref></UISrefActive>
+                            <UISrefActive class="active"><UISref to="TVwatchlist" params={{ username: sessionStorage.getItem("user") }}><a className="link dim mr3">TV</a></UISref></UISrefActive>
+                    </div>
                 </div>
            
-                    <UISrefActive class="active"><UISref to="watchlist" params={{ username: sessionStorage.getItem("user") }}><a className="link dim mr3">Watchlist</a></UISref></UISrefActive>                     
+                    
             
             {!sessionStorage.getItem("user") ?
             <span className = "loginDetails">            
