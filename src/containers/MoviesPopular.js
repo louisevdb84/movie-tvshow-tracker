@@ -38,8 +38,7 @@ class Popular extends Component {
     .then(response => response.json())
       .then(count =>
       {
-        this.setState({ totalPages: count })
-        console.log("Total Pages " + this.state.totalPages)          
+        this.setState({ totalPages: count })        
       })  
       .catch(err => { console.log(err) });
   }

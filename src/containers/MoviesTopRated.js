@@ -38,8 +38,7 @@ class Movies extends Component {
     .then(response => response.json())
       .then(count =>
       {
-        this.setState({ totalPages: count })
-        console.log("Total Pages " + this.state.totalPages)          
+        this.setState({ totalPages: count })        
       }) 
       .catch(err => { console.log(err) });
   }
@@ -96,8 +95,7 @@ class Movies extends Component {
             page: this.state.page})
           })
           .then(response => response.json())
-          .then(mov => {
-            console.log(mov)
+          .then(mov => {            
             if (mov.length > 0)
               this.setState({
                 topRated: this.addingGenres(mov, genre),

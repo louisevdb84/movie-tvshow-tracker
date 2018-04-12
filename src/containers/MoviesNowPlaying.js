@@ -36,8 +36,7 @@ class NowPlaying extends Component {
     .then(response => response.json())
       .then(count =>
       {
-        this.setState({ totalPages: count })
-        console.log("Total Pages " + this.state.totalPages)          
+        this.setState({ totalPages: count })        
       }) 
       .catch(err => { console.log(err) });
   }
@@ -229,8 +228,7 @@ class NowPlaying extends Component {
 
    
   render() {         
-    const { nowPlaying, baseURL, genreList,watchlistIds,  watchedIds, dislikeIds} = this.state;
-    console.log(nowPlaying)
+    const { nowPlaying, baseURL, genreList,watchlistIds,  watchedIds, dislikeIds} = this.state;    
     return (        
       
         <div>      

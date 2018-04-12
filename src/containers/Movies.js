@@ -37,8 +37,7 @@ class Movies extends Component {
     .then(response => response.json())
       .then(count =>
       {
-        this.setState({ totalPages: count })
-        console.log("Total Pages " + this.state.totalPages)          
+        this.setState({ totalPages: count })        
       })   
       .catch(err => { console.log(err) });
   }
@@ -47,7 +46,7 @@ class Movies extends Component {
     
     this.getPages();
 
-    if (this.state.page > 1 || this.state.page <= this.state.totalPages)
+    if (this.state.page > 1 && this.state.page <= this.state.totalPages)
     {
       this.setState({ page: this.state.page - 1 });      
       this.getMovies();
@@ -57,6 +56,7 @@ class Movies extends Component {
       this.setState({ page: this.state.totalPages }); 
       this.getMovies();
     }
+    window.scrollTo(0, 0);
       
   }
   nextPage = () => {  
@@ -73,12 +73,14 @@ class Movies extends Component {
       this.setState({ page: this.state.totalPages })
       this.getMovies();
     }  
+    window.scrollTo(0, 0);
   }
 
   randomPage = () => {
     this.getPages();
     this.setState({ page:  Math.floor((Math.random() * this.state.totalPages) + 1) })
     this.getMovies();
+    window.scrollTo(0, 0);
   }
 
 
@@ -177,7 +179,7 @@ class Movies extends Component {
       this.setState({ upcomingMovies: movieGenres })      
     }        
     else
-      alert("No movies in that genre");
+      alert("No movies on this page in that genre");
   })
 
   getWatchlist = () => {
