@@ -11,21 +11,25 @@ class TV extends React.Component {
         this.state = {
             feedback: "",
             watchlistIds: this.props.watchlistIds,            
-            baseURL: "http://image.tmdb.org/t/p/w185/"
+            baseURL: "http://image.tmdb.org/t/p/w185/",
+            season: '',
+            seasons: []
         }
     }     
 
-    componentDidMount() {  
+    componentWillMount() {  
         const { show } = this.props;
-        this.fetchDetails(show);      
-        this.addFeedback();
+        this.fetchDetails(show);  
     }
+    componentDidMount() {
+        this.addFeedback();           
+    }
+
     componentDidUpdate(prevProps, prevState) {  
         const { id, show } = this.props;
         if (prevProps.id !== id) {
             this.fetchDetails(show);            
-            this.addFeedback();
-            console.log(this.props.watchlistIds)
+            this.addFeedback();                                    
         }
     }
 
@@ -41,7 +45,7 @@ class TV extends React.Component {
             .then(details => {                   
                 if (details) { 
                     Object.assign(show, details);                  
-                    this.setState({ TVShow: show });                    
+                    this.setState({ TVShow: show }, this.seasonList);                    
                     return details;
                 }                                                    
              })             
@@ -54,10 +58,11 @@ class TV extends React.Component {
         {
             var found = false;   
             
-            this.state.watchlistIds.forEach(w => {                            
+            this.state.watchlistIds.forEach(w => {                                            
                 if (Number(w.tvid) === Number(this.props.id))
                 {                    
                     this.setState({ feedback: "Watchlist" });
+                    this.setState({ season: w.season });
                     found = true;                    
                 }                   
             });
@@ -119,20 +124,51 @@ class TV extends React.Component {
             }) 
     }  
 
-    render() {        
+    seasonList() {       
+        
+        var s = [];
+        for (var i = 0; i < this.props.show.number_of_seasons; i++){
+            s.push(i + 1);            
+        }                 
+        this.setState({ seasons: s });    
+
+        
+    }
+
+    updateSeason(event) {                
+        var season = event.target.value;
+        var id = event.target.id;  
+        
+
+        fetch('https://safe-bayou-79396.herokuapp.com/seasonupdate', {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                username: sessionStorage.getItem("user"),
+                id: id,
+	            season: season
+            })
+        })
+            .then(response => response.json())
+            .then(season => {                
+            })  
+    }
+
+    render() {                
+        
         const { name, vote_average, poster_path,
             first_air_date, overview, baseURL, show } = this.props;        
         return (            
             <section className="mw8 center avenir bg-light-gray">  
                 <article className="bt bb b--black-10">    
-                    <Feedback feedback={this.state.feedback}></Feedback>
+                <Feedback feedback={this.state.feedback}></Feedback>
                 <div className="db pv3 ph3 ph0-l no-underline black dim"></div>
                 <div className="flex flex-column flex-row-ns">
                     <div className="pr3-ns mb4 mb0-ns w-100 w-20-ns">
                     <img src={baseURL + poster_path} className="db" alt="No TV Show poster available"/>
                     </div>
                     <div className="w-100 w-80-ns pl3-ns">
-                            <h1 className="f3 fw1 baskerville mt0 lh-title">{name}</h1>   
+                            <h1 className="f3 fw1 baskerville mt0 lh-title">{name}</h1>                               
                             {
                                 (show.genres) ?
                                     show.genres.map((genre, i) => {
@@ -144,6 +180,18 @@ class TV extends React.Component {
                             <br />
                             <p className="f6 lh-copy mv0">{"Rating: " + vote_average}</p>
                             <p className="f6 f5-l lh-copy">Number of Seasons: {show.number_of_seasons}</p>  
+                            {this.state.feedback==="Watchlist"?
+                                <div>
+                                    <label>Last Season Watched: </label>
+                                    <select onChange={this.updateSeason} id={show.id} value={this.state.season}>
+                                        <option value="0">None</option>
+                                        {this.state.seasons.map(season => {                                            
+                                            return <option value={season}>Season {season}</option>
+                                        })}
+                                    </select>
+                                </div>
+                                :<span></span>
+                            }   
                             <p className="f6 f5-l lh-copy">{overview}</p>                                                 
                             <p className="f6 f5-l lh-copy"><strong>Status: {show.status}</strong></p>                
                             <p className="f6 lh-copy mv0">First Air Date: {first_air_date}</p>                            

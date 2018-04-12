@@ -26,9 +26,9 @@ class TVWatchlist extends Component {
         })
       })
         .then(response => response.json())
-        .then(list => {
-          if (list.length > 0) {            
-            list.forEach(id => {
+        .then(list => {          
+          if (list.length > 0) {                        
+            list.forEach(id => {              
               this.setState({ hasWatchlist: true })
               fetch('https://safe-bayou-79396.herokuapp.com/detailsTV', {
                 method: 'post',
@@ -39,8 +39,10 @@ class TVWatchlist extends Component {
                 })
               })
                 .then(response => response.json())
-                .then(entry => {                  
-                  this.setState({ watchlist: entry });
+                .then(entry => { 
+                  entry.last_season_watched = id.season;                  
+                  this.setState({watchlist: entry});
+                  
                 })
             })
           }
@@ -61,7 +63,7 @@ class TVWatchlist extends Component {
       const { watchlist, list, baseURL, hasWatchlist } = this.state;    
         if (watchlist.id) {
           list.push(watchlist);  
-        }    
+      }          
         return (  
           <div>      
             <Navbar></Navbar>

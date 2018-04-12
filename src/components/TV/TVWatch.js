@@ -9,34 +9,13 @@ class TVWatch extends React.Component {
     constructor(props) {
         super(props);
         this.state = {      
-            baseURL: "http://image.tmdb.org/t/p/w185/"
+            baseURL: "http://image.tmdb.org/t/p/w185/",
+            seasons: []
         }
     }        
-    
-    // removeWatchlist = (event) => {
-        
-        
-    //     var mid = "";
-    //     try {
-    //         mid = event.target.id;    
-    //     }
-    //     catch (err) {
-    //         mid = event;
-    //     }
-    
-    //     fetch('https://safe-bayou-79396.herokuapp.com/deletewatchlistTV', {
-    //         method: 'post',
-    //         headers: { 'Content-Type': 'application/json' },
-    //         body: JSON.stringify({
-    //             id: mid,
-    //             username: sessionStorage.getItem("user")
-    //         })
-    //     })
-    //         .then(response => response.json())
-    //         .then(entry => {        
-    //             this.props.getWatchlist().then(list=>this.setState({watchlistIds:list},this.addFeedback));
-    //         }) 
-    // }  
+    componentWillMount() {
+        this.seasonList();
+    }
 
     showMore(event) {        
         var details = document.getElementById(`${event.target.id}toggleContent`);  
@@ -45,26 +24,50 @@ class TVWatch extends React.Component {
         var img = document.getElementById(`${event.target.id}toggleImg`);       
         img.classList.toggle("dbhidden");
 
-        var btn = document.getElementById(event.target.id);
-        console.log(btn.innerText);
+        var btn = document.getElementById(`${event.target.id}`);        
         if (btn.innerText === "Show more") {            
             btn.innerText = "Hide";
         }
         else {btn.innerText = "Show more"}
     }
 
-    render() {        
-        const { show } = this.props;              
+    seasonList() {
+        
+        for (var i = 0; i < this.props.show.number_of_seasons; i++){
+            this.state.seasons.push(i+1);
+        }                    
+    }
+
+    updateSeason(event) {                
+        var season = event.target.value;
+        var id = event.target.id;        
+
+        fetch('https://safe-bayou-79396.herokuapp.com/seasonupdate', {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                username: sessionStorage.getItem("user"),
+                id: id,
+	            season: season
+            })
+        })
+            .then(response => response.json())
+            .then(season => {                
+            })  
+    }
+
+    render() {          
+        const { show } = this.props;                    
         return (            
             <section className="mw8 center avenir bg-light-gray">  
                 <article className="bt bb b--black-10">                        
                 <div className="pv1 no-underline black dim"></div>
                 <div className="flex flex-column flex-row-ns">
                     <div className="poster">
-                        <img id= {show.id+"toggleImg"} src={this.state.baseURL + show.poster_path} className="db dbhidden" alt="No TV Show poster available"/>
+                        <img id= {"btn"+show.id+"toggleImg"} src={this.state.baseURL + show.poster_path} className="db dbhidden" alt="No TV Show poster available"/>
                     </div>
                     <div className="w-100 w-80-ns pl3-ns">
-                            <h1 className="f3 fw1 baskerville mt0 lh-title">{show.name}</h1>   
+                            <h1 className="f3 fw1 baskerville mt0 lh-title">{show.name}</h1>                               
                             {
                                 (show.genres) ?
                                     show.genres.map((genre, i) => {
@@ -74,9 +77,18 @@ class TVWatch extends React.Component {
                                 }    
                             <br />
                             <br />
-                            <div id={show.id+"toggleContent"} className = "hiddencontent">
+                            <div id={"btn"+show.id+"toggleContent"} className = "hiddencontent">
                                 <p className="f6 lh-copy mv0">{"Rating: " + show.vote_average}</p>
                                 <p className="f6 f5-l lh-copy">Number of Seasons: {show.number_of_seasons}</p>  
+
+                                <label>Last Season Watched: </label>                                
+                                <select onChange={this.updateSeason} id={show.id} defaultValue={show.last_season_watched}>                            
+                                    <option value="0">None</option>    
+                                    {this.state.seasons.map(season => {
+                                        return <option value={season}>Season {season}</option>
+                                    })}
+                                </select>
+
                                 <p className="f6 f5-l lh-copy">{show.overview}</p>                                                 
                                 <p className="f6 f5-l lh-copy"><strong>Status: {show.status}</strong></p>                
                                 <p className="f6 lh-copy mv0">First Air Date: {show.first_air_date}</p>                            
@@ -84,7 +96,7 @@ class TVWatch extends React.Component {
                             </div>   
 
                             <div className="togglecontent">
-                                <button id={show.id} onClick={this.showMore} className = "togglecontentBTN">Show more</button>
+                                <button id={"btn"+show.id} onClick={this.showMore} className = "togglecontentBTN">Show more</button>
                             </div>
                
                     </div>                        
