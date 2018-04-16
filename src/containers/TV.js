@@ -2,6 +2,7 @@ import React from 'react';
 import TVList from '../components/TV/TVList';
 import Navbar from '../components/Shared/Navbar/Navbar';
 import Pagination from '../components/Shared/Pagination';
+import Search from '../components/TV/Search';
 import './TV.css'
 
 class TVShows extends React.Component {     
@@ -101,7 +102,27 @@ class TVShows extends React.Component {
                 return list;
             }
           })
-      }  
+    }  
+    
+    fetchSearchResults(searchValue) {                
+        console.log(searchValue);
+        fetch('https://safe-bayou-79396.herokuapp.com/searchTV', {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                searchTVShows: searchValue
+            })
+        })
+            .then(response => response.json())
+            .then(show => {
+                this.setState({ TVShows: show })
+            })
+            .catch(err => console.log(err))
+    }
+
+    onSearchChange = (event) => {        
+        this.fetchSearchResults(event.target.value);                
+    }
 
     render() {
         const { baseURL, TVShows, Oops } = this.state;
@@ -111,7 +132,8 @@ class TVShows extends React.Component {
                 {
                     (TVShows.length > 0) ? 
                     <div className="tvContainer">
-                        <h1>{this.props.heading}</h1>
+                            <h1>{this.props.heading}</h1>
+                            <Search onSearchChange={this.onSearchChange}></Search>
                             <Pagination totalPages={this.state.totalPages} page={this.state.page} prevPage={this.prevPage} nextPage={this.nextPage} randomPage={this.randomPage}></Pagination>
                             {(Oops) ?                                
                                     <h3 style={{"color" : "red"}}>{Oops}</h3>                                

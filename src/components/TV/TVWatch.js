@@ -15,6 +15,7 @@ class TVWatch extends React.Component {
     }        
     componentWillMount() {
         this.seasonList();
+        console.log("MOUNTED");
     }
 
     showMore(event) {        
