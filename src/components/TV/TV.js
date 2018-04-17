@@ -27,7 +27,7 @@ class TV extends React.Component {
 
     componentDidUpdate(prevProps, prevState) {  
         const { id, show } = this.props;
-        if (prevProps.id !== id) {
+        if (prevProps.id !== id) {            
             this.fetchDetails(show);            
             this.addFeedback();                                    
         }
@@ -42,7 +42,7 @@ class TV extends React.Component {
             })
         })      
             .then(response => response.json())
-            .then(details => {                   
+            .then(details => {                  
                 if (details) { 
                     Object.assign(show, details);                  
                     this.setState({ TVShow: show }, this.seasonList);                    

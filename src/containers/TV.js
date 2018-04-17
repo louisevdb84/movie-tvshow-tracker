@@ -13,7 +13,8 @@ class TVShows extends React.Component {
             TVShows: [],     
             watchlistIds : [],           
             page: 1,
-            totalPages: 0            
+            totalPages: 0,
+            backupTVShows: []
         }        
     }
     
@@ -40,7 +41,8 @@ class TVShows extends React.Component {
                     this.setState({                        
                         TVShows: show.results,
                         totalPages: show.total_pages,
-                        Oops: ""
+                        Oops: "",
+                        backupTVShows: show.results
                     });
                 } else {
                     if (show.status_code === 25) {
@@ -102,37 +104,42 @@ class TVShows extends React.Component {
                 return list;
             }
           })
-    }  
-    
-    fetchSearchResults(searchValue) {                
-        console.log(searchValue);
-        fetch('https://safe-bayou-79396.herokuapp.com/searchTV', {
-            method: 'post',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                searchTVShows: searchValue
+    } 
+    onSearchChange = (event) => {   
+        
+        var search = event.target.value;    
+        if (search.length < 1)
+        {
+            this.setState({TVShows: this.state.backupTVShows})
+        }        
+        else {
+            fetch('https://safe-bayou-79396.herokuapp.com/searchTV', {
+                method: 'post',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    searchTVShows: search
+                })
             })
-        })
-            .then(response => response.json())
-            .then(show => {
-                this.setState({ TVShows: show })
-            })
-            .catch(err => console.log(err))
-    }
+                .then(response => response.json())
+                .then(show => {
+                    this.setState({ TVShows: show })
+                })
+                .catch(err => console.log(err))   
+        }
 
-    onSearchChange = (event) => {        
-        this.fetchSearchResults(event.target.value);                
+        
     }
 
     render() {
         const { baseURL, TVShows, Oops } = this.state;
         return (
             <div>
-                <Navbar></Navbar>
-                {
+                <Navbar></Navbar>                
+                {                    
                     (TVShows.length > 0) ? 
                     <div className="tvContainer">
                             <h1>{this.props.heading}</h1>
+                            {!sessionStorage.getItem("user") ? <div style={{ "background": "red", "color": "white"}}>Your are not signed in</div> : <div></div>}
                             <Search onSearchChange={this.onSearchChange}></Search>
                             <Pagination totalPages={this.state.totalPages} page={this.state.page} prevPage={this.prevPage} nextPage={this.nextPage} randomPage={this.randomPage}></Pagination>
                             {(Oops) ?                                
