@@ -11,6 +11,8 @@ class TV extends React.Component {
         this.state = {
             feedback: "",
             watchlistIds: this.props.watchlistIds,            
+            watchedIds: this.props.watchedIds,            
+            dislikeIds: this.props.dislikeIds,
             baseURL: "http://image.tmdb.org/t/p/w185/",
             season: '',
             seasons: []
@@ -58,11 +60,28 @@ class TV extends React.Component {
         {
             var found = false;   
             
+            this.state.watchedIds.forEach(w => {                                            
+                if (Number(w.tvid) === Number(this.props.id))
+                {                    
+                    this.setState({ feedback: "Watched" });                    
+                    found = true;                    
+                }                   
+            });
+            
             this.state.watchlistIds.forEach(w => {                                            
                 if (Number(w.tvid) === Number(this.props.id))
                 {                    
                     this.setState({ feedback: "Watchlist" });
                     this.setState({ season: w.season });
+                    found = true;                    
+                }                   
+            });           
+
+
+            this.state.dislikeIds.forEach(w => {                                            
+                if (Number(w.tvid) === Number(this.props.id))
+                {                    
+                    this.setState({ feedback: "Dislike" });                    
                     found = true;                    
                 }                   
             });
@@ -99,6 +118,59 @@ class TV extends React.Component {
         }
     }    
 
+    addToWatched = (event) => {        
+        if (sessionStorage.getItem("user")) {
+            var mid = event.target.id;
+            this.removeWatchlist(event);
+            fetch('https://safe-bayou-79396.herokuapp.com/addwatchedTV', {
+                method: 'post',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    id: mid,
+                    username: sessionStorage.getItem("user")
+                })
+            })
+                .then(response => response.json())
+                .then(entry => {
+                    if (entry.length > 0) {                        
+                        this.props.getWatched().then(list=>this.setState({watchedIds:list}, this.addFeedback));
+                    }
+                    else {
+                        alert(entry);
+                    }
+                })
+        }
+        else {
+            router.stateService.go('login');
+        }
+    }    
+
+    addToDislike = (event) => {        
+        if (sessionStorage.getItem("user")) {
+            var mid = event.target.id;
+            fetch('https://safe-bayou-79396.herokuapp.com/addDislikeTV', {
+                method: 'post',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    id: mid,
+                    username: sessionStorage.getItem("user")
+                })
+            })
+                .then(response => response.json())
+                .then(entry => {
+                    if (entry.length > 0) {                        
+                        this.props.getDislike().then(list=>this.setState({dislikeIds:list}, this.addFeedback));
+                    }
+                    else {
+                        alert(entry);
+                    }
+                })
+        }
+        else {
+            router.stateService.go('login');
+        }
+    }    
+
     removeWatchlist = (event) => {
         
         
@@ -121,6 +193,56 @@ class TV extends React.Component {
             .then(response => response.json())
             .then(entry => {        
                 this.props.getWatchlist().then(list=>this.setState({watchlistIds:list},this.addFeedback));
+            }) 
+    }  
+
+    removeWatched = (event) => {
+        
+        
+        var mid = "";
+        try {
+            mid = event.target.id;    
+        }
+        catch (err) {
+            mid = event;
+        }
+    
+        fetch('https://safe-bayou-79396.herokuapp.com/deleteWatchedTV', {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                id: mid,
+                username: sessionStorage.getItem("user")
+            })
+        })
+            .then(response => response.json())
+            .then(entry => {        
+                this.props.getWatched().then(list=>this.setState({watchedIds:list},this.addFeedback));
+            }) 
+    }  
+
+    removeDislike = (event) => {
+        
+        
+        var mid = "";
+        try {
+            mid = event.target.id;    
+        }
+        catch (err) {
+            mid = event;
+        }
+    
+        fetch('https://safe-bayou-79396.herokuapp.com/deleteDislikeTV', {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                id: mid,
+                username: sessionStorage.getItem("user")
+            })
+        })
+            .then(response => response.json())
+            .then(entry => {        
+                this.props.getDislike().then(list=>this.setState({dislikeIds:list},this.addFeedback));
             }) 
     }  
 
@@ -196,9 +318,31 @@ class TV extends React.Component {
                             <p className="f6 f5-l lh-copy"><strong>Status: {show.status}</strong></p>                
                             <p className="f6 lh-copy mv0">First Air Date: {first_air_date}</p>                            
                              <br />                                    
+                            {
+                                (this.state.feedback === "Watchlist") ?
+                                    <span>    
+                                        <button onClick={this.addToWatched} id={this.props.id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-blue pointer">Watched</button>    
+                                        <button onClick={this.removeWatchlist} id={this.props.id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-purple pointer">Remove from watchlist</button>                                        
+                                    </span>
+                                    : (this.state.feedback=== "Watched") ?
+                                    <span>
+                                        <button onClick={this.addToWatchlist} id={this.props.id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-purple pointer">Watch Again?</button>                                           
+                                        <button onClick={this.removeWatched} id={this.props.id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-blue pointer">Remove watched</button>           
+                                    </span>
+                                    : (this.state.feedback === "Dislike") ?
+                                    <span>                                        
+                                        <button onClick={this.removeDislike} id={this.props.id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-purple pointer">Remove dislike</button>            
+                                    </span>
+                                    :
+                                    <span>
+                                        <button onClick={this.addToWatchlist} id={this.props.id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-purple pointer">Add to Watchlist</button>                       
+                                        <button onClick={this.addToWatched} id={this.props.id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-blue pointer">Watched</button>            
+                                        <button onClick={this.addToDislike} id={this.props.id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-purple pointer">Dislike</button>        
+                                    </span>        
+                            }                         
                             
-                            <button onClick={this.addToWatchlist} id={this.props.id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-purple pointer">Add to Watchlist</button>
-                             <button onClick={this.removeWatchlist} id={this.props.id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-blue pointer">Remove from watchlist</button>
+                            
+                            
                     </div>                        
                 </div>                      
                 </article>

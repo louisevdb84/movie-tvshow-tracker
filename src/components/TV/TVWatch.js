@@ -57,6 +57,59 @@ class TVWatch extends React.Component {
             })  
     }
 
+    addToWatched = (event) => {        
+        if (sessionStorage.getItem("user")) {
+            var mid = event.target.id;
+            this.removeWatchlist(event);
+            fetch('https://safe-bayou-79396.herokuapp.com/addwatchedTV', {
+                method: 'post',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    id: mid,
+                    username: sessionStorage.getItem("user")
+                })
+            })
+                .then(response => response.json())
+                .then(entry => {
+                    if (entry.length > 0) {                                                
+                        document.location.reload();
+                    }
+                    else {
+                        alert(entry);
+                    }
+                })
+        }
+        else {
+            router.stateService.go('login');
+        }
+    }    
+
+    removeWatchlist = (event) => {
+        
+        
+        var mid = "";
+        try {
+            mid = event.target.id;    
+        }
+        catch (err) {
+            mid = event;
+        }
+    
+        fetch('https://safe-bayou-79396.herokuapp.com/deletewatchlistTV', {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                id: mid,
+                username: sessionStorage.getItem("user")
+            })
+        })
+            .then(response => response.json())
+            .then(entry => {                        
+                document.location.reload();
+            }) 
+    }  
+
+
     render() {          
         const { show } = this.props;                    
         return (            
@@ -97,7 +150,9 @@ class TVWatch extends React.Component {
                             </div>   
 
                             <div className="togglecontent">
-                                <button id={"btn"+show.id} onClick={this.showMore} className = "togglecontentBTN">Show more</button>
+                                <button id={"btn" + show.id} onClick={this.showMore} className="togglecontentBTN f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-blue pointer">Show more</button>                                
+                                <button onClick={this.removeWatchlist} id={show.id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-purple pointer">Remove</button>
+                                <button onClick={this.addToWatched} id={show.id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-blue pointer">Watched</button>
                             </div>
                
                     </div>                        

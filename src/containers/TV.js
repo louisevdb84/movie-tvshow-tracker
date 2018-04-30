@@ -11,7 +11,9 @@ class TVShows extends React.Component {
         this.state = {
             baseURL: "http://image.tmdb.org/t/p/w185/",   
             TVShows: [],     
-            watchlistIds : [],           
+            watchlistIds: [],           
+            watchedIds: [],           
+            dislikeIds : [],           
             page: 1,
             totalPages: 0,
             backupTVShows: []
@@ -25,6 +27,8 @@ class TVShows extends React.Component {
         });
         this.getTVShows();
         this.getWatchlist();
+        this.getWatched();
+        this.getDislike();
     }
 
     getTVShows = () => {        
@@ -105,6 +109,40 @@ class TVShows extends React.Component {
             }
           })
     } 
+
+    getWatched = () => {        
+        return fetch('https://safe-bayou-79396.herokuapp.com/watchedTV', {
+          method: 'post',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: sessionStorage.getItem("user")
+          })
+        })
+          .then(response => response.json())
+          .then(list => {
+            if (list) {
+                this.setState({ watchedIds: list });               
+                return list;
+            }
+          })
+    } 
+
+    getDislike = () => {        
+        return fetch('https://safe-bayou-79396.herokuapp.com/dislikeTV', {
+          method: 'post',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: sessionStorage.getItem("user")
+          })
+        })
+          .then(response => response.json())
+          .then(list => {
+            if (list) {
+                this.setState({ dislikeIds: list });               
+                return list;
+            }
+          })
+    } 
     onSearchChange = (event) => {   
         
         var search = event.target.value;    
@@ -145,7 +183,7 @@ class TVShows extends React.Component {
                             {(Oops) ?                                
                                     <h3 style={{"color" : "red"}}>{Oops}</h3>                                
                                 : <span></span>}
-                            <TVList TVShows={TVShows} baseURL={baseURL} watchlistIds={this.state.watchlistIds} getWatchlist={this.getWatchlist} ></TVList>                
+                            <TVList TVShows={TVShows} baseURL={baseURL} watchlistIds={this.state.watchlistIds} getWatchlist={this.getWatchlist} watchedIds={this.state.watchedIds} getWatched={this.getWatched} dislikeIds={this.state.dislikeIds} getDislike={this.getDislike} ></TVList>                
                         <Pagination totalPages={this.state.totalPages} page={this.state.page} prevPage={this.prevPage} nextPage={this.nextPage} randomPage={this.randomPage}></Pagination>
                     </div>
                     :<p className="tvContainer">Loading</p>

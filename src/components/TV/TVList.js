@@ -21,6 +21,8 @@ class TVList extends React.Component {
                             genres={TVShow.genres}
                             show={TVShow}
                             watchlistIds={this.props.watchlistIds} getWatchlist={this.props.getWatchlist}
+                            watchedIds={this.props.watchedIds} getWatched={this.props.getWatched}
+                            dislikeIds={this.props.dislikeIds} getDislike={this.props.getDislike}
                         />
                     })
                 }
