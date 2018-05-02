@@ -326,7 +326,14 @@ class Movie extends React.Component {
         }    
     }
     componentDidMount() {                
-        this.addFeedback();        
+        this.addFeedback();       
+        if (this.props.opt === "Movies") {
+            var details = document.getElementById(`btn${this.props.id}toggleContent`);              
+            details.classList.remove("hiddencontent");
+            
+            var img = document.getElementById(`btn${this.props.id}toggleImg`);       
+            img.classList.toggle("dbhidden");
+        }
     }
     componentWillReceiveProps() {                    
         this.addFeedback();
@@ -336,7 +343,22 @@ class Movie extends React.Component {
         if (prevProps.id !== this.props.id) {
             this.addFeedback();
         }
-      }
+    }
+    
+    showMore(event) {   
+             
+        var details = document.getElementById(`${event.target.id}toggleContent`);  
+        details.classList.toggle("hiddencontent");
+        
+        var img = document.getElementById(`${event.target.id}toggleImg`);       
+        img.classList.toggle("dbhidden");
+
+        var btn = document.getElementById(`${event.target.id}`);        
+        if (btn.innerText === "Show more") {            
+            btn.innerText = "Hide";
+        }
+        else {btn.innerText = "Show more"}
+    }
     
     render() {
         
@@ -345,6 +367,7 @@ class Movie extends React.Component {
             baseURL, genres, opt} = this.props;
         
         const { feedback } = this.state;
+        console.log(opt);
         
             return (
                 
@@ -359,7 +382,7 @@ class Movie extends React.Component {
                     <div className="db pv3 ph3 ph0-l no-underline black dim"></div>
                     <div className="flex flex-column flex-row-ns">
                         <div className="pr3-ns mb4 mb0-ns w-100 w-20-ns">
-                        <img src={baseURL + poster_path} className="db" alt="No movie poster available"/>
+                        <img id= {"btn"+id+"toggleImg"} src={baseURL + poster_path} className="db dbhidden" alt="No movie poster available"/>
                         </div>
                         <div className="w-100 w-80-ns pl3-ns">
                                 <h1 className="f3 fw1 baskerville mt0 lh-title">{title}</h1>
@@ -376,33 +399,36 @@ class Movie extends React.Component {
                                         }</h4>
                             }
                         
-                            <p className="f6 lh-copy mv0">{"Rating: " + vote_average}</p>
-                            <p className="f6 f5-l lh-copy">
-                                {overview}
-                            </p>
-                    
-                                <p className="f6 lh-copy mv0">{release_date}</p>
+                            <div id={"btn"+id+"toggleContent"} className = "hiddencontent">
+                                    <p className="f6 lh-copy mv0">{"Rating: " + vote_average}</p>
+                                    <p className="f6 f5-l lh-copy">
+                                        {overview}
+                                    </p>
+                            
+                                        <p className="f6 lh-copy mv0">{release_date}</p>
 
-                                <div className="cast_trailers">
-                                    <a onClick={this.getCast}>Cast</a>
-                                    <a className="tooltip" onClick={this.getTrailers}>Trailer
-                                        <span class="tooltiptext">Enable pop-ups for this site to be able to view trailer</span>
-                                    </a>
-                                </div>
+                                        <div className="cast_trailers">
+                                            <a onClick={this.getCast}>Cast</a>
+                                            <a className="tooltip" onClick={this.getTrailers}>Trailer
+                                                <span class="tooltiptext">Enable pop-ups for this site to be able to view trailer</span>
+                                            </a>
+                                        </div>
 
-                                <div id="myModal" class="modal">
-                                    <div class="modal-content">
-                                            <div class="modal-header">
-                                                <span class="close">&times;</span>
-                                            <h2 id="title"></h2>
+                                        <div id="myModal" class="modal">
+                                            <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <span class="close">&times;</span>
+                                                    <h2 id="title"></h2>
+                                                    </div>
+                                                <div class="modal-body">
+                                                    <div id="content"></div>                                               
+                                                </div>        
                                             </div>
-                                        <div class="modal-body">
-                                            <div id="content"></div>                                               
-                                        </div>        
                                     </div>
-                                </div>
-                               
-                            <br />        
+                                    <br /> 
+                            </div>
+                                    
+                                   
                             {opt === "Movies" ?
                                 <span>
                                         {feedback === "Watchlist" ?
@@ -429,8 +455,11 @@ class Movie extends React.Component {
                                     }                                    
                                 </span>
                             :
-                                <span><button onClick={this.removeWatchlist} id={id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-purple pointer">Remove</button>
-                                <button onClick={this.addToWatched} id={id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-blue pointer">Watched</button></span>
+                                    <span>
+                                        <button id={"btn" + id} onClick={this.showMore} className="togglecontentBTN f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-blue pointer">Show more</button>                                    
+                                        <button onClick={this.removeWatchlist} id={id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-purple pointer">Remove</button>
+                                        <button onClick={this.addToWatched} id={id} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-blue pointer">Watched</button>
+                                    </span>
                         }
                                
                         </div>

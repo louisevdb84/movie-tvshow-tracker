@@ -141,3 +141,11 @@
 
 }
 
+.hiddencontent{
+    display: none;
+    height: 120px;
+}
+
+.dbhidden{
+   height: 120px;
+}

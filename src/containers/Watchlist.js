@@ -92,7 +92,7 @@ class Watchlist extends Component {
             <br />
             <br />
             <div className="tc">      
-            <h1>Watchlist</h1>
+            <h1>Movies Watchlist</h1>
             {!hasWatchlist ?
               <p>Nothing in watchlist</p>
               : hasWatchlist && list.length>0 ? <MovieList movies={list} baseURL={baseURL} watchedIds={this.state.watchedIds}/>            
