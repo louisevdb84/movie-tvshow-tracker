@@ -144,8 +144,8 @@ class TVShows extends React.Component {
           })
     } 
     onSearchChange = (event) => {   
+        var search = document.getElementById('searchText').value;        
         
-        var search = event.target.value;    
         if (search.length < 1)
         {
             this.setState({TVShows: this.state.backupTVShows})
@@ -160,7 +160,12 @@ class TVShows extends React.Component {
             })
                 .then(response => response.json())
                 .then(show => {
-                    this.setState({ TVShows: show })
+                    if (show.length > 0)
+                        this.setState({ TVShows: show })
+                    else {
+                        alert("No matching titles");
+                    }
+                        
                 })
                 .catch(err => console.log(err))   
         }

@@ -389,9 +389,6 @@ class Movie extends React.Component {
                                         <span class="tooltiptext">Enable pop-ups for this site to be able to view trailer</span>
                                     </a>
                                 </div>
-                                
-
-
 
                                 <div id="myModal" class="modal">
                                     <div class="modal-content">

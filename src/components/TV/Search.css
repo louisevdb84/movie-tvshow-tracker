@@ -1,7 +1,6 @@
 .txtSearch{    
     padding: 5px;
-    width: 50%;
+    width: 200px;
     border-radius: 10px;
-    background: whitesmoke;
-    text-align: center;
+    background: whitesmoke;    
 }
