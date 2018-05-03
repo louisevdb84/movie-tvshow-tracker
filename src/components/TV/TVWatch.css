@@ -6,3 +6,11 @@
 .dbhidden{
    height: 120px;
 }
+
+@media screen and (max-width: 500px)
+{
+  img.db{
+      width: 150px;      
+      margin: 0 auto;
+  }
+}

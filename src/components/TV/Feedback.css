@@ -9,7 +9,7 @@
     font-weight: bold;
     color: white;
     text-align: right;
-    background: #5e2ca5;
+    background: green;
     font-size: 1.2em;
     padding-left: 50px;
     padding-right: 50px;
@@ -46,4 +46,23 @@
     background-size: 100px;
     background-repeat: no-repeat;
     background-position: center;
+}
+
+@media screen and (max-width: 1000px)
+{
+  .Dislike span {
+    margin-top: 5px;    
+    font-weight: bold;
+    color: white;
+    text-align: right;
+    background: red;
+    font-size: 1.2em;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 5px;
+
+   
+  }
 }
