@@ -72,6 +72,7 @@ class TVShows extends React.Component {
         {
           this.setState({ page: this.state.totalPages }, this.getTVShows);             
         }
+        document.getElementById("searchText").value = "";
         window.scrollTo(0, 0);
     }
     
@@ -85,11 +86,13 @@ class TVShows extends React.Component {
         {
           this.setState({ page: this.state.totalPages }, this.getTVShows)          
         }  
+        document.getElementById("searchText").value = "";
         window.scrollTo(0, 0);
       }
     
     randomPage = () => {        
         this.setState({ page: Math.floor((Math.random() * this.state.totalPages) + 1) }, this.getTVShows);        
+        document.getElementById("searchText").value = "";
         window.scrollTo(0, 0);
     }   
 

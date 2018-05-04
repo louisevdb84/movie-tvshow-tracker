@@ -9,14 +9,14 @@ class Options extends React.Component {
                 <div className = "optionsContainer">     
                 <div className = "filter">                   
                 
-                <select onChange={this.props.onSortingChange} className="dropdbox">
-                    <option>Sorting options</option>    
-                    <option name="rating" value="rating">Sort Rating</option>
-                    <option name="date" value="date">Sort Date</option>            
+                <select id = "sorting" onChange={this.props.onSortingChange} className="dropdbox">
+                    <option>Sorting</option>    
+                    <option name="rating" value="rating">Rating</option>
+                    <option name="date" value="date">Date</option>            
                 </select>  
                 
-                <select onChange={this.props.onGenreChange} className="dropdbox">
-                <option>Genre options</option>                    
+                <select id = "genre" onChange={this.props.onGenreChange} className="dropdbox">
+                <option>Genre</option>                    
                     {   
                             this.props.genreList.map((g, i) => {                                                    
                             return <option key={i} value={g.id}>{g.name}</option>                
