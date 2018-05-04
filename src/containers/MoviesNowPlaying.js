@@ -171,9 +171,14 @@ class NowPlaying extends Component {
       fetch('https://safe-bayou-79396.herokuapp.com/search', { method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ searchMovies: search }) })
         .then(response => response.json())
         .then(mov => {
+          if (mov.length > 0)
           this.setState({
             nowPlaying: this.addingGenres(mov, this.state.genres)
-          })
+        })
+        else {
+            alert("No matching titles");
+      }     
+          
         })
         .catch(err => console.log(err))
     }
@@ -256,7 +261,7 @@ class NowPlaying extends Component {
                     onGenreChange={this.onGenreChange} />  
           <div className="tc">             
           <h1 className="moviesheading">Now Playing</h1>
-          {!sessionStorage.getItem("user") ? <div style={{ "background": "red", "color": "white"}}>Your are not signed in</div> : <div></div>}
+          {!sessionStorage.getItem("user") ? <div style={{ "background": "red", "color": "white", "margin": "15px", "padding": "10px"}}>Your are not signed in</div> : <div></div>}
           {nowPlaying.length > 0 ?
             <div>
                 <Pagination totalPages={this.state.totalPages} page={this.state.page} prevPage={this.prevPage} nextPage={this.nextPage} randomPage={this.randomPage}></Pagination>

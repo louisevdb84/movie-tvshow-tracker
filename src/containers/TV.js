@@ -173,7 +173,7 @@ class TVShows extends React.Component {
                     if (show.length > 0)
                         this.setState({ TVShows: show })
                     else {
-                        alert("No matching titles");
+                        alert("No matching titles");                        
                     }
                         
                 })
@@ -191,8 +191,8 @@ class TVShows extends React.Component {
                 {                    
                     (TVShows.length > 0) ? 
                     <div className="tvContainer">
-                            <h1>{this.props.heading}</h1>
-                            {!sessionStorage.getItem("user") ? <div style={{ "background": "red", "color": "white"}}>Your are not signed in</div> : <div></div>}
+                            <h1>{this.props.heading}</h1>                            
+                            {!sessionStorage.getItem("user") ? <div style={{ "background": "red", "color": "white", "margin": "15px", "padding": "10px"}}>Your are not signed in</div> : <div></div>}
                             <Search onSearchChange={this.onSearchChange}></Search>
                             <Pagination totalPages={this.state.totalPages} page={this.state.page} prevPage={this.prevPage} nextPage={this.nextPage} randomPage={this.randomPage}></Pagination>
                             {(Oops) ?                                
