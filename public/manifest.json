@@ -1,12 +1,42 @@
 {
   "short_name": "Movie Tracker",
   "name": "Movie and TV Show Tracker",
-  "icons": [
+  "icons": [   
     {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16 48x48 96x96 144x144 192x192 256x256",
-      "type": "image/x-icon"
-    }
+      "src": "Movie.png",
+      "type": "image/png",
+      "sizes": "48x48"
+  },
+  {
+    "src": "Movie.png",
+      "type": "image/png",
+      "sizes": "96x96"
+  },
+  {
+    "src": "Movie.png",
+      "type": "image/png",
+      "sizes": "144x144"
+  },
+  {
+    "src": "Movie.png",
+      "type": "image/png",
+      "sizes": "192x192"
+  },
+  {
+    "src": "Movie.png",
+      "type": "image/png",
+      "sizes": "256x256"
+  },
+  {
+    "src": "Movie.png",
+      "type": "image/png",
+      "sizes": "384x384"
+  },
+  {
+    "src": "Movie.png",
+      "type": "image/png",
+      "sizes": "512x512"
+  }
   ],
   "start_url": "./index.html",
   "display": "standalone",
