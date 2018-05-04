@@ -57,6 +57,10 @@ class Popular extends Component {
       this.setState({ page: this.state.totalPages });    
       this.getMovies();
     }
+    document.getElementById("search").value = "";
+    document.getElementById("sorting").selectedIndex = 0;
+    document.getElementById("genre").selectedIndex = 0;
+    document.getElementById("pages").style.display = 'block';
     window.scrollTo(0, 0);
       
   }
@@ -74,6 +78,10 @@ class Popular extends Component {
       this.setState({ page: this.state.totalPages })
       this.getMovies();
     } 
+    document.getElementById("search").value = "";
+    document.getElementById("sorting").selectedIndex = 0;
+    document.getElementById("genre").selectedIndex = 0;
+    document.getElementById("pages").style.display = 'block';
     window.scrollTo(0, 0);
   }
 
@@ -81,6 +89,10 @@ class Popular extends Component {
     this.getPages();
     this.setState({ page:  Math.floor((Math.random() * this.state.totalPages) + 1) })
     this.getMovies();
+    document.getElementById("search").value = "";
+    document.getElementById("sorting").selectedIndex = 0;
+    document.getElementById("genre").selectedIndex = 0;
+    document.getElementById("pages").style.display = 'block';
     window.scrollTo(0, 0);
   }
 
@@ -150,6 +162,10 @@ class Popular extends Component {
   onSearchTextChange = (event) => {
     
     var search = event.target.value;
+
+    var page = document.getElementById("pages");
+    if(page)
+      page.style.display = 'none';
     if (search.length < 1) {
       this.setState({ popular: this.state.backupMovies })
       

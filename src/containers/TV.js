@@ -73,6 +73,7 @@ class TVShows extends React.Component {
           this.setState({ page: this.state.totalPages }, this.getTVShows);             
         }
         document.getElementById("searchText").value = "";
+        document.getElementById("pages").style.display = 'block';
         window.scrollTo(0, 0);
     }
     
@@ -87,12 +88,14 @@ class TVShows extends React.Component {
           this.setState({ page: this.state.totalPages }, this.getTVShows)          
         }  
         document.getElementById("searchText").value = "";
+        document.getElementById("pages").style.display = 'block';
         window.scrollTo(0, 0);
       }
     
     randomPage = () => {        
         this.setState({ page: Math.floor((Math.random() * this.state.totalPages) + 1) }, this.getTVShows);        
         document.getElementById("searchText").value = "";
+        document.getElementById("pages").style.display = 'block';
         window.scrollTo(0, 0);
     }   
 
@@ -147,7 +150,11 @@ class TVShows extends React.Component {
           })
     } 
     onSearchChange = (event) => {   
-        var search = document.getElementById('searchText').value;        
+        var search = document.getElementById('searchText').value;    
+        
+        var page = document.getElementById("pages");
+        if(page)
+          page.style.display = 'none';
         
         if (search.length < 1)
         {

@@ -59,6 +59,7 @@ class Movies extends Component {
     document.getElementById("search").value = "";
     document.getElementById("sorting").selectedIndex = 0;
     document.getElementById("genre").selectedIndex = 0;
+    document.getElementById("pages").style.display = 'block';
     window.scrollTo(0, 0);
       
   }
@@ -79,6 +80,7 @@ class Movies extends Component {
     document.getElementById("search").value = "";
     document.getElementById("sorting").selectedIndex = 0;
     document.getElementById("genre").selectedIndex = 0;
+    document.getElementById("pages").style.display = 'block';
     window.scrollTo(0, 0);
   }
 
@@ -89,6 +91,7 @@ class Movies extends Component {
     document.getElementById("search").value = "";
     document.getElementById("sorting").selectedIndex = 0;
     document.getElementById("genre").selectedIndex = 0;
+    document.getElementById("pages").style.display = 'block';
     window.scrollTo(0, 0);
   }
 
@@ -156,7 +159,10 @@ class Movies extends Component {
 
   onSearchTextChange = (event)=> {   
     
-    var search = event.target.value;    
+    var search = event.target.value;   
+    var page = document.getElementById("pages");
+    if(page)
+      page.style.display = 'none';
     if (search.length < 1)
     {
       this.setState({ upcomingMovies: this.state.backupMovies })
@@ -170,6 +176,7 @@ class Movies extends Component {
           this.setState({
               upcomingMovies: this.addingGenres(mov, this.state.genres)          
           })
+          
         })    
       .catch(err => console.log(err))
       }  
