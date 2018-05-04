@@ -18,7 +18,7 @@ class Register extends React.Component {
     })
       .then(response => response.json())
       .then(user => {        
-        if (user) {          
+        if (user && user != "Unable to register") {          
           sessionStorage.setItem("user", user);
           router.stateService.go('upcoming', { username: user});          
         }
