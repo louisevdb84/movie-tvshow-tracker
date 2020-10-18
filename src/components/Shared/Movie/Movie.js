@@ -4,6 +4,9 @@ import './Movie.css';
 
 import { router } from '../../../router.config';
 
+const SAFE_BAYOU_SERVER = "https://safe-bayou-79396.herokuapp.com/";
+const IMAGE_BASE_URL="http://image.tmdb.org/t/p/w185/";
+
 class Movie extends React.Component { 
     constructor(props) {
         super(props);
@@ -12,7 +15,7 @@ class Movie extends React.Component {
             watchlistIds : this.props.watchlistIds,
             watchedIds: this.props.watchedIds,
             dislikeIds: this.props.dislikeIds,
-            baseURL: "http://image.tmdb.org/t/p/w185/"
+            baseURL: IMAGE_BASE_URL
         }
     }
 
@@ -62,7 +65,7 @@ class Movie extends React.Component {
 
 
     getCast = () => {        
-        fetch('https://safe-bayou-79396.herokuapp.com/cast', {
+        fetch(SAFE_BAYOU_SERVER + 'cast', {
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -81,7 +84,7 @@ class Movie extends React.Component {
 
     getTrailers = () => {
         
-        fetch('https://safe-bayou-79396.herokuapp.com/trailers', {
+        fetch(SAFE_BAYOU_SERVER + 'trailers', {
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -106,7 +109,7 @@ class Movie extends React.Component {
     addToWatchlist = (event) => {
         if (sessionStorage.getItem("user")) {
             var mid = event.target.id;
-            fetch('https://safe-bayou-79396.herokuapp.com/addwatchlist', {
+            fetch(SAFE_BAYOU_SERVER + 'addwatchlist', {
                 method: 'post',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -134,7 +137,7 @@ class Movie extends React.Component {
     addToWatched = (event) => {        
         if (sessionStorage.getItem("user")) {
         var mid = event.target.id;
-            fetch('https://safe-bayou-79396.herokuapp.com/addwatched', {
+            fetch(SAFE_BAYOU_SERVER + 'addwatched', {
                 method: 'post',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -163,7 +166,7 @@ class Movie extends React.Component {
     addToDislike = (event) => {
         if (sessionStorage.getItem("user")) {
             var mid = event.target.id;
-            fetch('https://safe-bayou-79396.herokuapp.com/addDislike', {
+            fetch(SAFE_BAYOU_SERVER + 'addDislike', {
                 method: 'post',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -198,7 +201,7 @@ class Movie extends React.Component {
             mid = event;
         }
     
-        fetch('https://safe-bayou-79396.herokuapp.com/deletewatchlist', {
+        fetch(SAFE_BAYOU_SERVER + 'deletewatchlist', {
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -232,7 +235,7 @@ class Movie extends React.Component {
             mid = event;
         }
     
-        fetch('https://safe-bayou-79396.herokuapp.com/deletewatched', {
+        fetch(SAFE_BAYOU_SERVER + 'deletewatched', {
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -268,7 +271,7 @@ class Movie extends React.Component {
             mid = event;
         }
     
-        fetch('https://safe-bayou-79396.herokuapp.com/deleteDislike', {
+        fetch(SAFE_BAYOU_SERVER + 'deleteDislike', {
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
